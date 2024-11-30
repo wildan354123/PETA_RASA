@@ -133,6 +133,20 @@ class _DetailScreenState extends State<DetailScreen> {
                       Text(': ${widget.makanan.location}'),
                     ],
                   ),
+                  Row(
+                    children: [
+                      const Icon(Icons.emoji_events, color: Colors.red),
+                      const SizedBox(width: 8),
+                      const SizedBox(
+                        width: 70,
+                        child: Text(
+                          'Popularitas',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Text(': ${widget.makanan.popularity}'),
+                    ],
+                  ),
                   const SizedBox(height: 16),
                   Divider(color: Colors.deepPurple.shade100),
                   const SizedBox(height: 16),
