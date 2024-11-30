@@ -16,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Wisata Candi',
+          'PETA RASA',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 22,

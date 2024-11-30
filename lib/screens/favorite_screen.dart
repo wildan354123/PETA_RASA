@@ -14,11 +14,11 @@ class FavoriteScreen extends StatefulWidget {
 class _FavoriteScreenState extends State<FavoriteScreen> {
   @override
   Widget build(BuildContext context) {
+    // Mendapatkan provider untuk sign-in dan favorites
     Provider.of<SignInProvider>(context);
     final favoritesProvider = Provider.of<FavoritesProvider>(context);
     final favorites = favoritesProvider.favorites;
 
-    // Jika sudah login, tampilkan halaman favorites
     return Scaffold(
       appBar: AppBar(
         title: const Text('Favorites'),
@@ -44,6 +44,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  // Gambar makanan dengan ukuran tetap
                   Container(
                     padding: const EdgeInsets.all(8),
                     width: 100,
@@ -56,30 +57,39 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                       ),
                     ),
                   ),
+                  // Column untuk teks nama dan lokasi makanan
                   Padding(
                     padding: const EdgeInsets.all(8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          makanan.name,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                    child: Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            makanan.name,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                           ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          makanan.location,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey,
+                          const SizedBox(height: 4),
+                          Text(
+                            makanan.location,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                  const SizedBox(width: 150),
+                  // Spacer untuk mendorong ikon ke kanan
+                  const Spacer(),
+                  // Tombol untuk menghapus makanan favorit
                   IconButton(
                     icon: const Icon(Icons.favorite, color: Colors.red),
                     onPressed: () {

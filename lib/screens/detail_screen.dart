@@ -180,7 +180,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 children: [
                   Divider(color: Colors.deepPurple.shade100),
                   const Text(
-                    'Galeri',
+                    'Resep',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
@@ -193,7 +193,24 @@ class _DetailScreenState extends State<DetailScreen> {
                         return Padding(
                           padding: const EdgeInsets.only(right: 8),
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              // Tampilkan gambar besar di dialog
+                              showDialog(
+                                context: context,
+                                builder: (context) => Dialog(
+                                  backgroundColor: Colors.transparent,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.pop(context); // Menutup dialog saat gambar diklik
+                                    },
+                                    child: CachedNetworkImage(
+                                      imageUrl: widget.makanan.imageAsset2[index],
+                                      fit: BoxFit.contain, // Pastikan gambar penuh
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
