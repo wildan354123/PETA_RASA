@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:wisata_candi/screens/detail_screen.dart';
+import 'package:PETA_RASA/screens/detail_screen.dart';
 import '../models/makanan.dart';
 
 class ItemCard extends StatelessWidget {
   //TODO: 1. Deklarasikan variabel yang dibutuhkan dan pasang pada konstruktor
-  final Candi candi ;
-  const ItemCard({super.key, required this.candi});
+  final Makanan makanan ;
+  const ItemCard({super.key, required this.makanan});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class ItemCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         Navigator.push(context,
-          MaterialPageRoute(builder: (context) => DetailScreen(candi: candi),
+          MaterialPageRoute(builder: (context) => DetailScreen(makanan: makanan),
           ),
         );
       },
@@ -22,7 +22,7 @@ class ItemCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15)
         ),
-        margin: EdgeInsets.all(4),
+        margin: const EdgeInsets.all(4),
         elevation: 1,
         child: Column(
           children: [
@@ -32,7 +32,7 @@ class ItemCard extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15) ,
                 child: Image.asset(
-                    candi.imageAsset,
+                    makanan.imageAsset,
                     width: double.infinity,
                     fit: BoxFit.cover
                 ),
@@ -42,8 +42,8 @@ class ItemCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 16, top: 8),
               child: Text(
-                candi.name,
-                style: TextStyle(
+                makanan.name,
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
@@ -53,8 +53,8 @@ class ItemCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 16, bottom: 8),
               child: Text(
-                  candi.type,
-                  style: TextStyle(fontSize: 12)
+                  makanan.resep,
+                  style: const TextStyle(fontSize: 12)
               ),
             ),
           ],

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wisata_candi/screens/home_screen.dart';
-import 'package:wisata_candi/screens/profile_screen.dart';
-import 'package:wisata_candi/screens/search_screen.dart';
-import 'package:wisata_candi/screens/sign_in.dart';
-import 'package:wisata_candi/screens/sign_up.dart';
-import 'package:wisata_candi/screens/favorite_screen.dart';
-import 'package:wisata_candi/provider/favorites_provider.dart';
-import 'package:wisata_candi/provider/signin_provider.dart';
+import 'package:PETA_RASA/screens/home_screen.dart';
+import 'package:PETA_RASA/screens/profile_screen.dart';
+import 'package:PETA_RASA/screens/search_screen.dart';
+import 'package:PETA_RASA/screens/sign_in.dart';
+import 'package:PETA_RASA/screens/sign_up.dart';
+import 'package:PETA_RASA/screens/favorite_screen.dart';
+import 'package:PETA_RASA/provider/favorites_provider.dart';
+import 'package:PETA_RASA/provider/signin_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => FavoritesProvider()),
       ],
       child: MaterialApp(
-        title: 'Wisata Candi',
+        title: 'PETA RASA',
         theme: ThemeData(
           appBarTheme: const AppBarTheme(
             iconTheme: IconThemeData(color: Colors.deepPurple),

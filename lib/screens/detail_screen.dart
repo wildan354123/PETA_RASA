@@ -1,12 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:wisata_candi/models/makanan.dart';
-import 'package:wisata_candi/provider/favorites_provider.dart';
+import 'package:PETA_RASA/models/makanan.dart';
+import 'package:PETA_RASA/provider/favorites_provider.dart';
 
 class DetailScreen extends StatefulWidget {
-  final Candi candi;
-  DetailScreen({super.key, required this.candi});
+  final Makanan makanan;
+  const DetailScreen({super.key, required this.makanan});
 
   @override
   _DetailScreenState createState() => _DetailScreenState();
@@ -21,7 +22,7 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   Widget build(BuildContext context) {
     final favoritesProvider = Provider.of<FavoritesProvider>(context);
-    final bool isFavorite = favoritesProvider.isFavorite(widget.candi);
+    final bool isFavorite = favoritesProvider.isFavorite(widget.makanan);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -30,20 +31,18 @@ class _DetailScreenState extends State<DetailScreen> {
             // Detail header
             Stack(
               children: [
-                // Padding image
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image.asset(
-                      widget.candi.imageAsset,
+                      widget.makanan.imageAsset,
                       width: double.infinity,
                       height: 300,
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                // Padding back button
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
                   child: Container(
@@ -52,10 +51,11 @@ class _DetailScreenState extends State<DetailScreen> {
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: const Icon(Icons.arrow_back)),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(Icons.arrow_back),
+                    ),
                   ),
                 )
               ],
@@ -67,12 +67,12 @@ class _DetailScreenState extends State<DetailScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 16),
-                  // Info atas (nama candi dan tombol favorit)
+                  // Info atas (nama makanan dan tombol favorit)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        widget.candi.name,
+                        widget.makanan.name,
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -81,11 +81,10 @@ class _DetailScreenState extends State<DetailScreen> {
                       IconButton(
                         onPressed: () {
                           setState(() {
-                            // Menambahkan atau menghapus candi dari favorit menggunakan favoritesProvider
                             if (isFavorite) {
-                              favoritesProvider.removeFavorite(widget.candi);
+                              favoritesProvider.removeFavorite(widget.makanan);
                             } else {
-                              favoritesProvider.addFavorite(widget.candi);
+                              favoritesProvider.addFavorite(widget.makanan);
                             }
                           });
                         },
@@ -96,7 +95,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       )
                     ],
                   ),
-                  // Info tengah (lokasi, dibangun, tipe)
+                  // Info lokasi dan lainnya
                   const SizedBox(height: 16),
                   Row(
                     children: [
@@ -109,7 +108,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Text(': ${widget.candi.location}'),
+                      Text(': ${widget.makanan.location}'),
                     ],
                   ),
                   Row(
@@ -123,27 +122,13 @@ class _DetailScreenState extends State<DetailScreen> {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Text(': ${widget.candi.built}'),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const Icon(Icons.house, color: Colors.green),
-                      const SizedBox(width: 8),
-                      const SizedBox(
-                        width: 70,
-                        child: Text(
-                          'Tipe',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Text(': ${widget.candi.type}'),
+                      Text(': ${widget.makanan.resep}'),
                     ],
                   ),
                   const SizedBox(height: 16),
                   Divider(color: Colors.deepPurple.shade100),
                   const SizedBox(height: 16),
-                  // Info bawah (deskripsi)
+                  // Deskripsi
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -156,15 +141,52 @@ class _DetailScreenState extends State<DetailScreen> {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        '${widget.candi.description}',
+                        '${widget.makanan.description}',
                         textAlign: TextAlign.justify,
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
-            // DetailGallery
+            // Rating Section
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Beri Rating',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  const SizedBox(height: 8),
+                  RatingBar.builder(
+                    initialRating: widget.makanan.rating,
+                    minRating: 1,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    itemSize: 30,
+                    itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    itemBuilder: (context, _) => const Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                    ),
+                    onRatingUpdate: (rating) {
+                      setState(() {
+                        widget.makanan.rating = rating;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Rating saat ini: ${widget.makanan.rating.toStringAsFixed(1)} / 5.0',
+                    style: const TextStyle(fontSize: 14),
+                  ),
+                ],
+              ),
+            ),
+            // Gallery Section
             Padding(
               padding: const EdgeInsets.all(15),
               child: Column(
@@ -180,11 +202,10 @@ class _DetailScreenState extends State<DetailScreen> {
                     height: 100,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: widget.candi.imageUrls.length,
+                      itemCount: widget.makanan.imageAsset2.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.only(right: 8),
-                          // Bingkai
                           child: GestureDetector(
                             onTap: () {},
                             child: Container(
@@ -198,7 +219,7 @@ class _DetailScreenState extends State<DetailScreen> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: CachedNetworkImage(
-                                  imageUrl: widget.candi.imageUrls[index],
+                                  imageUrl: widget.makanan.imageAsset2[index],
                                   width: 120,
                                   height: 120,
                                   fit: BoxFit.cover,
@@ -207,7 +228,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                     height: 120,
                                     color: Colors.deepPurple[50],
                                   ),
-                                  errorWidget: (context, url, error) =>
+                                  errorWidget: (context, asset, error) =>
                                   const Icon(Icons.error),
                                 ),
                               ),
@@ -224,7 +245,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

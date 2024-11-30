@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:wisata_candi/data/candi_data.dart';
-import 'package:wisata_candi/models/makanan.dart';
-import 'package:wisata_candi/widgets/item_card.dart';
+import 'package:PETA_RASA/data/makanan_data.dart';
+import 'package:PETA_RASA/models/makanan.dart';
+import 'package:PETA_RASA/widgets/item_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,10 +21,10 @@ class _HomeScreenState extends State<HomeScreen> {
       body: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
         padding: EdgeInsets.all(8),
-        itemCount: candiList.length,
+        itemCount: makananList.length,
         itemBuilder: (context, index) {
-          final Candi candi = candiList[index];
-          return ItemCard(candi: candi);
+          final Makanan makanan = makananList[index];
+          return ItemCard(makanan: makanan);
         },
         // TODO : 3. Buat ItemCard sebagai return value dari GridView.Builder
       ),

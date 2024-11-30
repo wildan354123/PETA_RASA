@@ -121,7 +121,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                           children: <TextSpan>[
                             TextSpan(
-                              text: "Dafatar disini",
+                              text: "Daftar disini",
                               style: TextStyle(
                                   color: Colors.blue,
                                   decoration: TextDecoration.underline,

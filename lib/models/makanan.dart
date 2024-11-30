@@ -1,25 +1,25 @@
-class Makanan {
-  final String id;
+class Makanan{
   final String name;
   final String location;
+  final String popularity;
   final String description;
-  final String built;
-  final String type;
+  final String resep;
   final String imageAsset;
-  final List<String> imageUrls;
+  final List<String> imageAsset2;
   bool isFavorite;
+  double rating;
 
- Makanan ({
-    required this.id,
+  Makanan({
     required this.name,
     required this.location,
+    required this.popularity,
     required this.description,
-    required this.built,
-    required this.type,
+    required this.resep,
     required this.imageAsset,
-    required this.imageUrls,
+    required this.imageAsset2,
     this.isFavorite = false,
-  });
+    this.rating = 0.0,
+
+});
 
 }
-

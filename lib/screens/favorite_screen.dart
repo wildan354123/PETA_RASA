@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wisata_candi/provider/favorites_provider.dart';
-import 'package:wisata_candi/provider/signin_provider.dart';
-import 'package:wisata_candi/screens/detail_screen.dart';
+import 'package:PETA_RASA/provider/favorites_provider.dart';
+import 'package:PETA_RASA/provider/signin_provider.dart';
+import 'package:PETA_RASA/screens/detail_screen.dart';
 
 class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({super.key});
@@ -24,18 +24,18 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         title: const Text('Favorites'),
       ),
       body: favorites.isEmpty
-          ? const Center(child: Text('Belum ada candi favorit!'))
+          ? const Center(child: Text('Belum ada makanan favorit!'))
           : ListView.builder(
         itemCount: favorites.length,
         itemBuilder: (context, index) {
-          final candi = favorites[index];
+          final makanan = favorites[index];
           return InkWell(
             onTap: () {
               // Navigasi ke DetailScreen ketika item ditekan
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => DetailScreen(candi: candi),
+                  builder: (context) => DetailScreen(makanan: makanan),
                 ),
               );
             },
@@ -51,7 +51,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: Image.asset(
-                        candi.imageAsset,
+                        makanan.imageAsset,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -62,7 +62,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          candi.name,
+                          makanan.name,
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -70,7 +70,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          candi.location,
+                          makanan.location,
                           style: const TextStyle(
                             fontSize: 14,
                             color: Colors.grey,
@@ -83,7 +83,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                   IconButton(
                     icon: const Icon(Icons.favorite, color: Colors.red),
                     onPressed: () {
-                      favoritesProvider.removeFavorite(candi);
+                      favoritesProvider.removeFavorite(makanan);
                     },
                   ),
                 ],

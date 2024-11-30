@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:wisata_candi/data/candi_data.dart'; // Pastikan sudah ada data candi
-import 'package:wisata_candi/models/makanan.dart'; // Pastikan sudah ada model candi
-import 'package:wisata_candi/screens/detail_screen.dart'; // Pastikan DetailScreen sudah ada
+import 'package:PETA_RASA/data/makanan_data.dart'; // Pastikan sudah ada data candi
+import 'package:PETA_RASA/models/makanan.dart'; // Pastikan sudah ada model candi
+import 'package:PETA_RASA/screens/detail_screen.dart'; // Pastikan DetailScreen sudah ada
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -11,7 +11,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  List<Candi> _filteredCandis = candiList; // candiList sudah didefinisikan sebelumnya
+  List<Makanan> _filteredCandis = makananList; // candiList sudah didefinisikan sebelumnya
   String _searchQuery = '';
   final TextEditingController _searchController = TextEditingController();
 
@@ -35,7 +35,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 onChanged: (value) {
                   setState(() {
                     _searchQuery = value.toLowerCase();
-                    _filteredCandis = candiList.where((candi) {
+                    _filteredCandis = makananList.where((candi) {
                       return candi.name.toLowerCase().contains(_searchQuery) ||
                           candi.location.toLowerCase().contains(_searchQuery);
                     }).toList();
@@ -51,7 +51,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       setState(() {
                         _searchQuery = '';
                         _searchController.clear();
-                        _filteredCandis = candiList;
+                        _filteredCandis = makananList;
                       });
                     },
                   )
@@ -78,7 +78,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DetailScreen(candi: candi),
+                        builder: (context) => DetailScreen(makanan: candi),
                       ),
                     );
                   },
