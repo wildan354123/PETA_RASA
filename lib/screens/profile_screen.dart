@@ -12,7 +12,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool isSignedIn = false;
   String fullName = "Guest";
   String userName = "guest_user";
-  int favoriteCandiCount = 0;
+  int favoriteMakananCount = 0;
 
   // Implementasi Fungsi Sign In
   void signIn() {
@@ -20,7 +20,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       isSignedIn = true;
     //   userName = 'budi';
     //   fullName = 'Budi Santoso';
-    //   favoriteCandiCount = 3;
+    //   favoriteMakananCount = 3;
     });
   }
 
@@ -30,7 +30,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       isSignedIn = false;
     //   userName = 'guest_user';
     //   fullName = 'Guest';
-    //   favoriteCandiCount = 0;
+    //   favoriteMakananCount = 0;
     });
   }
 
@@ -102,7 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   context,
                   icon: Icons.favorite,
                   label: "Favorite",
-                  value: "$favoriteCandiCount",
+                  value: "$favoriteMakananCount",
                   iconColor: Colors.red,
                 ),
                 Divider(color: Colors.deepPurple[100]),

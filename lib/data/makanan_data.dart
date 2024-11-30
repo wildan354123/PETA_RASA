@@ -1,6 +1,6 @@
 import 'package:PETA_RASA/models/makanan.dart';
 
-var makananList = [
+var makananList =
   Makanan(
       name: 'Pempek',
       location: 'Palembang, Sumatera Selatan',

@@ -71,7 +71,7 @@ class _SearchScreenState extends State<SearchScreen> {
             child: ListView.builder(
               itemCount: _filteredMakanans.length,
               itemBuilder: (context, index) {
-                final makanan = _filteredCandis[index];
+                final makanan = _filteredMakanans[index];
                 return InkWell(
                   onTap: () {
                     // Navigasi ke DetailScreen dengan membawa data makanan
