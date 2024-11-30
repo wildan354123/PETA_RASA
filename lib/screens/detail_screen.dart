@@ -67,17 +67,30 @@ class _DetailScreenState extends State<DetailScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 16),
-                  // Info atas (nama makanan dan tombol favorit)
+                  // Info atas (rating dan tombol favorit)
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end, // Menempatkan rating dan tombol di kanan
                     children: [
-                      Text(
-                        widget.makanan.name,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                      // Rating di kiri, tombol favorite di kanan
+                      RatingBar.builder(
+                        initialRating: widget.makanan.rating,
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        itemSize: 20,
+                        itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        itemBuilder: (context, _) => const Icon(
+                          Icons.star,
+                          color: Colors.amber,
                         ),
+                        onRatingUpdate: (rating) {
+                          setState(() {
+                            widget.makanan.rating = rating;
+                          });
+                        },
                       ),
+                      const SizedBox(width: 8), // Memberikan jarak antara rating dan tombol favorite
                       IconButton(
                         onPressed: () {
                           setState(() {
@@ -92,8 +105,17 @@ class _DetailScreenState extends State<DetailScreen> {
                           isFavorite ? Icons.favorite : Icons.favorite_border,
                           color: isFavorite ? Colors.red : null,
                         ),
-                      )
+                      ),
                     ],
+                  ),
+                  // Nama makanan di tengah
+                  const SizedBox(height: 16),
+                  Text(
+                    widget.makanan.name,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   // Info lokasi dan lainnya
                   const SizedBox(height: 16),
@@ -131,43 +153,6 @@ class _DetailScreenState extends State<DetailScreen> {
                         textAlign: TextAlign.justify,
                       ),
                     ],
-                  ),
-                ],
-              ),
-            ),
-            // Rating Section
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Beri Rating',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                  const SizedBox(height: 8),
-                  RatingBar.builder(
-                    initialRating: widget.makanan.rating,
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    allowHalfRating: true,
-                    itemCount: 5,
-                    itemSize: 30,
-                    itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    itemBuilder: (context, _) => const Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                    ),
-                    onRatingUpdate: (rating) {
-                      setState(() {
-                        widget.makanan.rating = rating;
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Rating saat ini: ${widget.makanan.rating.toStringAsFixed(1)} / 5.0',
-                    style: const TextStyle(fontSize: 14),
                   ),
                 ],
               ),
