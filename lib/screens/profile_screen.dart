@@ -21,6 +21,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     //   userName = 'budi';
     //   fullName = 'Budi Santoso';
     //   favoriteMakananCount = 3;
+
+      //   userName = 'budi';
+      //   fullName = 'Budi Santoso';
+      //   favoriteCandiCount = 3;
     });
   }
 
@@ -31,6 +35,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     //   userName = 'guest_user';
     //   fullName = 'Guest';
     //   favoriteMakananCount = 0;
+      //   userName = 'guest_user';
+      //   fullName = 'Guest';
+      //   favoriteCandiCount = 0;
     });
   }
 
@@ -43,7 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Container(
             height: 200,
             width: double.infinity,
-            color: Colors.deepPurple,
+            color: Colors.deepOrange,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -59,7 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                            border: Border.all(color: Colors.deepPurple, width: 2),
+                            border: Border.all(color: Colors.deepOrange, width: 2),
                             shape: BoxShape.circle,
                           ),
                           child: const CircleAvatar(
@@ -72,7 +79,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             onPressed: () {},
                             icon: const Icon(
                               Icons.camera_alt,
-                              color: Colors.deepPurple,
+                              color: Colors.deepOrange,
                             ),
                           ),
                       ],
@@ -81,7 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 // Profile info
                 const SizedBox(height: 20),
-                Divider(color: Colors.deepPurple[100]),
+                Divider(color: Colors.deepOrange[100]),
                 _buildProfileInfo(
                   context,
                   icon: Icons.lock,
@@ -89,7 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   value: userName,
                   iconColor: Colors.amber,
                 ),
-                Divider(color: Colors.deepPurple[100]),
+                Divider(color: Colors.deepOrange[100]),
                 _buildProfileInfo(
                   context,
                   icon: Icons.person,
@@ -97,7 +104,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   value: fullName,
                   iconColor: Colors.blue,
                 ),
-                Divider(color: Colors.deepPurple[100]),
+                Divider(color: Colors.deepOrange[100]),
                 _buildProfileInfo(
                   context,
                   icon: Icons.favorite,
@@ -105,7 +112,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   value: "$favoriteMakananCount",
                   iconColor: Colors.red,
                 ),
-                Divider(color: Colors.deepPurple[100]),
+                Divider(color: Colors.deepOrange[100]),
                 const SizedBox(height: 20),
                 // Profile action (Sign In/Out)
                 TextButton(

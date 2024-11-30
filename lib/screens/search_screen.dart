@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:PETA_RASA/data/makanan_data.dart'; // Pastikan sudah ada data makanan
-import 'package:PETA_RASA/models/makanan.dart'; // Pastikan sudah ada model makanan
+import 'package:PETA_RASA/data/makanan_data.dart'; // Pastikan sudah ada data candi
+import 'package:PETA_RASA/models/makanan.dart'; // Pastikan sudah ada model candi
 import 'package:PETA_RASA/screens/detail_screen.dart'; // Pastikan DetailScreen sudah ada
 
 class SearchScreen extends StatefulWidget {
@@ -28,16 +28,16 @@ class _SearchScreenState extends State<SearchScreen> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color: Colors.deepPurple[50],
+                color: Colors.deepOrange[50],
               ),
               child: TextField(
                 controller: _searchController,
                 onChanged: (value) {
                   setState(() {
                     _searchQuery = value.toLowerCase();
-                    _filteredMakanans = makananList.where((makanan) {
-                      return makanan.name.toLowerCase().contains(_searchQuery) ||
-                          makanan.location.toLowerCase().contains(_searchQuery);
+                    _filteredMakanans = makananList.where((candi) {
+                      return candi.name.toLowerCase().contains(_searchQuery) ||
+                          candi.location.toLowerCase().contains(_searchQuery);
                     }).toList();
                   });
                 },
@@ -74,7 +74,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 final makanan = _filteredMakanans[index];
                 return InkWell(
                   onTap: () {
-                    // Navigasi ke DetailScreen dengan membawa data makanan
+                    // Navigasi ke DetailScreen dengan membawa data candi
                     Navigator.push(
                       context,
                       MaterialPageRoute(

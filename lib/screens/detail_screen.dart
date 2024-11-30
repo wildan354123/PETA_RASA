@@ -111,20 +111,6 @@ class _DetailScreenState extends State<DetailScreen> {
                       Text(': ${widget.makanan.location}'),
                     ],
                   ),
-                  Row(
-                    children: [
-                      const Icon(Icons.calendar_month, color: Colors.blue),
-                      const SizedBox(width: 8),
-                      const SizedBox(
-                        width: 70,
-                        child: Text(
-                          'Dibangun',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Text(': ${widget.makanan.resep}'),
-                    ],
-                  ),
                   const SizedBox(height: 16),
                   Divider(color: Colors.deepPurple.shade100),
                   const SizedBox(height: 16),

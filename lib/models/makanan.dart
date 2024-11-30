@@ -3,7 +3,6 @@ class Makanan{
   final String location;
   final String popularity;
   final String description;
-  final String resep;
   final String imageAsset;
   final List<String> imageAsset2;
   bool isFavorite;
@@ -14,7 +13,7 @@ class Makanan{
     required this.location,
     required this.popularity,
     required this.description,
-    required this.resep,
+
     required this.imageAsset,
     required this.imageAsset2,
     this.isFavorite = false,
