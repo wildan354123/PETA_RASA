@@ -90,7 +90,11 @@ var makananList = [
         location: 'Betawi, DKI Jakarta',
         popularity: '',
         description: 'Soto Betawi merupakan jenis soto dari daerah DKI Jakarta. Selain jeroan, sering kali organ-organ lain juga disertakan, seperti mata, terpedo, penis sapi dan juga hati.',
-        imageAsset: imageAsset,
+        imageAsset: 'images/soto_betawi.jpeg',
+        imageAsset2: [
+          'images/bahan_Soto_Betawi.png',
+          'images/tutor_Soto_Betawi.png',
+        ],
         isFavorite: false,
   ),
   Makanan(
@@ -98,7 +102,11 @@ var makananList = [
         location: 'Betawi, DKI Jakarta',
         popularity: '',
         description: 'Kerak telur adalah makanan asli daerah Jakarta (Betawi), dengan bahan-bahan beras ketan putih, telur ayam atau bebek, ebi (udang kering yang diasinkan), ditambah bawang merah goreng, lalu diberi bumbu yang dihaluskan berupa kelapa sangrai, cabai merah, kencur, jahe, kunyit,sereh halus, merica butiran, garam dan gula pasir.',
-        imageAsset: imageAsset,
+        imageAsset: 'images/kerak_telor.jpeg',
+        imageAsset2: [
+          'images/bahan_kerak_telur.png',
+          'images/tutor_kerak_telur.png',
+        ],
         isFavorite: false,
   ),
   Makanan(
