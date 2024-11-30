@@ -18,11 +18,10 @@ var makananList = [
     location: 'Padang, Sumatera Barat',
     popularity: '',
     description: 'Rendang (bahasa Minangkabau: randang; Jawi: رندڠ, Batak: ᯒᯉᯢᯝ) adalah hidangan berbahan dasar daging yang dihasilkan dari proses memasak suhu rendah dalam waktu lama dengan menggunakan aneka rempah-rempah dan santan. Proses memasaknya memakan waktu berjam-jam (biasanya sekitar empat jam) hingga yang tinggal hanyalah potongan daging berwarna hitam pekat dan dedak. Dalam suhu ruangan, rendang dapat bertahan hingga berminggu-minggu. Rendang yang dimasak dalam waktu yang lebih singkat dan santannya belum mengering disebut kalio, berwarna cokelat terang keemasan.',
-    resep:'',
     imageAsset: 'images/rendang.jpeg',
     imageAsset2: [
-      'images/rendang.jpeg',
-      'images/pempek.jpeg',
+      'images/bahan_rendang.png',
+      'images/tutor_rendnag.png',
     ],
     isFavorite: false,
   ),
