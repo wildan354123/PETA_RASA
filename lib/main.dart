@@ -13,7 +13,6 @@ import 'package:PETA_RASA/provider/signin_provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Memeriksa status login dari SharedPreferences
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final bool isSignedIn = prefs.getBool('isSignedIn') ?? false;
 
@@ -29,32 +28,32 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) {
-          final provider = SignInProvider();
-          provider.setLoginStatus(isSignedIn); // Set initial login status
-          return provider;
-        }),
-        ChangeNotifierProvider(create: (context) => FavoritesProvider()),
+        ChangeNotifierProvider(create: (_) => SignInProvider()),
+        ChangeNotifierProvider(create: (_) => FavoritesProvider()),
       ],
       child: MaterialApp(
         title: 'PETA RASA',
         theme: ThemeData(
           appBarTheme: const AppBarTheme(
-            iconTheme: IconThemeData(color: Colors.deepPurple),
+            backgroundColor: Colors.deepOrange,
             titleTextStyle: TextStyle(
-              color: Colors.deepPurple,
+              color: Colors.white,
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)
-              .copyWith(primary: Colors.deepPurple, surface: Colors.deepPurple[50]),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange).copyWith(
+            primary: Colors.deepOrange,
+            secondary: Colors.deepOrangeAccent,
+            surface: Colors.deepOrange[50],
+            onSurface: Colors.deepOrange[800],
+          ),
+          scaffoldBackgroundColor: Colors.deepOrange[50],
           useMaterial3: true,
         ),
         initialRoute: '/',
         routes: {
           '/': (context) => const MainScreen(),
-          '/homescreen': (context) => const HomeScreen(),
           '/signin': (context) => SignInScreen(),
           '/signup': (context) => const SignUpScreen(),
           '/favorite': (context) => const FavoriteScreen(),
@@ -73,8 +72,8 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
+  final PageController _pageController = PageController();
 
-  // Daftar layar yang akan ditampilkan sesuai dengan indeks
   final List<Widget> _children = [
     const HomeScreen(),
     const SearchScreen(),
@@ -82,42 +81,103 @@ class _MainScreenState extends State<MainScreen> {
     const ProfileScreen(),
   ];
 
+  void _onTap(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+    _pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _children[_currentIndex], // Menampilkan layar yang dipilih
-      bottomNavigationBar: Theme(
-        data: Theme.of(context).copyWith(canvasColor: Colors.deepPurple[50]),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        children: _children,
+        physics: const BouncingScrollPhysics(),
+      ),
+      bottomNavigationBar: Container(
+        margin: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.deepOrange,
+          borderRadius: BorderRadius.circular(30),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.deepOrange.withOpacity(0.3),
+              blurRadius: 10,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
         child: BottomNavigationBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
           currentIndex: _currentIndex,
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-          items: const [
+          onTap: _onTap,
+          type: BottomNavigationBarType.fixed,
+          selectedFontSize: 12,
+          unselectedFontSize: 12,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.white70,
+          items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home, color: Colors.deepPurple),
+              icon: _buildIcon(Icons.home, 0),
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.search, color: Colors.deepPurple),
+              icon: _buildIcon(Icons.search, 1),
               label: 'Search',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.favorite, color: Colors.deepPurple),
+              icon: _buildIcon(Icons.favorite, 2),
               label: 'Favorite',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person, color: Colors.deepPurple),
+              icon: _buildIcon(Icons.person, 3),
               label: 'Profile',
             ),
           ],
-          selectedItemColor: Colors.deepPurple,
-          unselectedItemColor: Colors.deepPurple[100],
-          showUnselectedLabels: true,
         ),
       ),
     );
+  }
+
+  Widget _buildIcon(IconData icon, int index) {
+    final isSelected = _currentIndex == index;
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: isSelected ? Colors.white : Colors.transparent,
+        shape: BoxShape.circle,
+        boxShadow: isSelected
+            ? [
+          BoxShadow(
+            color: Colors.white.withOpacity(0.4),
+            blurRadius: 6,
+          )
+        ]
+            : null,
+      ),
+      child: Icon(
+        icon,
+        color: isSelected ? Colors.deepOrange : Colors.white70,
+        size: 24,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 }

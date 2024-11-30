@@ -50,13 +50,6 @@ class ItemCard extends StatelessWidget {
               ),
             ),
             //TODO: 5. Buat Text sebagai anak dari Column
-            Padding(
-              padding: const EdgeInsets.only(left: 16, bottom: 8),
-              child: Text(
-                  makanan.resep,
-                  style: const TextStyle(fontSize: 12)
-              ),
-            ),
           ],
         ),
       ),

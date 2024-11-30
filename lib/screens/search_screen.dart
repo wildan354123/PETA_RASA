@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:PETA_RASA/data/makanan_data.dart'; // Pastikan sudah ada data makanan
-import 'package:PETA_RASA/models/makanan.dart'; // Pastikan sudah ada model makanan
+import 'package:PETA_RASA/data/makanan_data.dart'; // Pastikan sudah ada data candi
+import 'package:PETA_RASA/models/makanan.dart'; // Pastikan sudah ada model candi
 import 'package:PETA_RASA/screens/detail_screen.dart'; // Pastikan DetailScreen sudah ada
 
 class SearchScreen extends StatefulWidget {
@@ -11,7 +11,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  List<Makanan> _filteredMakanans = makananList; // makananList sudah didefinisikan sebelumnya
+  List<Makanan> _filteredCandis = makananList; // candiList sudah didefinisikan sebelumnya
   String _searchQuery = '';
   final TextEditingController _searchController = TextEditingController();
 
@@ -28,16 +28,16 @@ class _SearchScreenState extends State<SearchScreen> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color: Colors.deepPurple[50],
+                color: Colors.deepOrange[50],
               ),
               child: TextField(
                 controller: _searchController,
                 onChanged: (value) {
                   setState(() {
                     _searchQuery = value.toLowerCase();
-                    _filteredMakanans = makananList.where((makanan) {
-                      return makanan.name.toLowerCase().contains(_searchQuery) ||
-                          makanan.location.toLowerCase().contains(_searchQuery);
+                    _filteredCandis = makananList.where((candi) {
+                      return candi.name.toLowerCase().contains(_searchQuery) ||
+                          candi.location.toLowerCase().contains(_searchQuery);
                     }).toList();
                   });
                 },
@@ -51,7 +51,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       setState(() {
                         _searchQuery = '';
                         _searchController.clear();
-                        _filteredMakanans = makananList;
+                        _filteredCandis = makananList;
                       });
                     },
                   )
@@ -69,16 +69,16 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: _filteredMakanans.length,
+              itemCount: _filteredCandis.length,
               itemBuilder: (context, index) {
-                final makanan = _filteredCandis[index];
+                final candi = _filteredCandis[index];
                 return InkWell(
                   onTap: () {
-                    // Navigasi ke DetailScreen dengan membawa data makanan
+                    // Navigasi ke DetailScreen dengan membawa data candi
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DetailScreen(makanan: makanan),
+                        builder: (context) => DetailScreen(makanan: candi),
                       ),
                     );
                   },
@@ -94,7 +94,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: Image.asset(
-                              makanan.imageAsset,
+                              candi.imageAsset,
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -105,7 +105,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                makanan.name,
+                                candi.name,
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -113,7 +113,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                makanan.location,
+                                candi.location,
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
