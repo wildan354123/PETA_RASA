@@ -13,7 +13,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool isSignedIn = false;
   String fullName = '';
   String userName = '';
-  int favoriteCandiCount = 0;
+  int favoriteMakananCount = 0;
 
   @override
   void initState() {
@@ -28,7 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       isSignedIn = prefs.getBool('isSignedIn') ?? false;
       userName = prefs.getString('Username') ?? '';
       fullName = prefs.getString('FullName') ?? '';
-      favoriteCandiCount = prefs.getInt('FavoriteCandiCount') ?? 0;
+      favoriteMakananCount = prefs.getInt('FavoriteMakananCount') ?? 0;
     });
   }
 
@@ -47,7 +47,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       prefs.setBool('isSignedIn', false);  // Set status login ke false
       prefs.remove('Username');  // Hapus data pengguna
       prefs.remove('FullName');
-      prefs.remove('FavoriteCandiCount');
+      prefs.remove('FavoriteMakananCount');
     });
   }
 
@@ -152,7 +152,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     Expanded(
-                      child: Text(': $favoriteCandiCount', style: const TextStyle(fontSize: 18)),
+                      child: Text(': $favoriteMakananCount', style: const TextStyle(fontSize: 18)),
                     ),
                     if (isSignedIn) const Icon(Icons.edit),
                   ],
