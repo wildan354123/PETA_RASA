@@ -78,7 +78,11 @@ var makananList = [
         location: 'Ponorogo, Jawa Timur',
         popularity: '',
         description: 'Rawon (Aksara Jawa:ꦫꦮꦺꦴꦤ꧀) adalah masakan khas Indonesia yang berasal dari Ponorogo, Jawa Timur, yang berupa sup daging berkuah hitam dengan campuran bumbu khas yang menggunakan kluwek.',
-        imageAsset: imageAsset,
+        imageAsset: 'images/rawon.jpeg',
+        imageAsset2: [
+          'images/bahan_Rawon.png',
+          'images/tutor_Rawon.png',
+        ],
         isFavorite: false,
   ),
   Makanan(
