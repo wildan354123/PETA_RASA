@@ -21,10 +21,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     //   userName = 'budi';
     //   fullName = 'Budi Santoso';
     //   favoriteMakananCount = 3;
-
-      //   userName = 'budi';
-      //   fullName = 'Budi Santoso';
-      //   favoriteCandiCount = 3;
     });
   }
 
@@ -35,9 +31,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     //   userName = 'guest_user';
     //   fullName = 'Guest';
     //   favoriteMakananCount = 0;
-      //   userName = 'guest_user';
-      //   fullName = 'Guest';
-      //   favoriteCandiCount = 0;
     });
   }
 
