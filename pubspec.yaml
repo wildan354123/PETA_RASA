@@ -16,6 +16,8 @@ dependencies:
   shared_preferences: ^2.3.3
   provider: ^6.1.2
   flutter_rating_bar: ^4.0.1
+  carousel_slider: ^5.0.0
+  gestures: ^1.0.0
 
 
 dev_dependencies:

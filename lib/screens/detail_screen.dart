@@ -122,7 +122,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   Row(
                     children: [
                       const Icon(Icons.place, color: Colors.red),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 9),
                       const SizedBox(
                         width: 70,
                         child: Text(
@@ -136,7 +136,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   Row(
                     children: [
                       const Icon(Icons.emoji_events, color: Colors.red),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 9),
                       const SizedBox(
                         width: 70,
                         child: Text(

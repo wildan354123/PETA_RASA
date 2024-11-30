@@ -1,7 +1,8 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:PETA_RASA/data/makanan_data.dart';
 import 'package:PETA_RASA/models/makanan.dart';
-import 'package:PETA_RASA/widgets/item_card.dart';
+import 'package:PETA_RASA/screens/detail_screen.dart'; // Import halaman DetailScreen
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,39 +29,102 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 5,
       ),
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.orangeAccent, Colors.deepOrange],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            childAspectRatio: 3 / 4,
-          ),
-          padding: const EdgeInsets.all(12),
-          itemCount: makananList.length,
-          itemBuilder: (context, index) {
-            final Makanan makanan = makananList[index];
-            return Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 6,
-                    offset: const Offset(2, 4),
-                  ),
-                ],
+        color: Colors.white, // Background putih
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+            const Text(
+              'Rekomendasi Pilihan',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.deepOrange,
               ),
-              child: ItemCard(makanan: makanan),
-            );
-          },
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: CarouselSlider.builder(
+                itemCount: makananList.length,
+                options: CarouselOptions(
+                  height: MediaQuery.of(context).size.height * 0.6,
+                  enlargeCenterPage: true,
+                  enableInfiniteScroll: true,
+                  autoPlay: true,
+                  autoPlayInterval: const Duration(seconds: 3),
+                ),
+                itemBuilder: (context, index, realIndex) {
+                  final Makanan makanan = makananList[index];
+                  return GestureDetector(
+                    onTap: () {
+                      // Navigasi ke DetailScreen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailScreen(makanan: makanan),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 10,
+                            offset: const Offset(0, 5),
+                          ),
+                        ],
+                        color: Colors.white,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: Image.asset(
+                              makanan.imageAsset,
+                              height: 180,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Text(
+                              makanan.name,
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Text(
+                              makanan.description,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: Colors.grey,
+                              ),
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 20),
+          ],
         ),
       ),
     );
