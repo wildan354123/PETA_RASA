@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:PETA_RASA/data/makanan_data.dart'; // Pastikan sudah ada data candi
-import 'package:PETA_RASA/models/makanan.dart'; // Pastikan sudah ada model candi
+import 'package:PETA_RASA/data/makanan_data.dart'; // Pastikan sudah ada data makanan
+import 'package:PETA_RASA/models/makanan.dart'; // Pastikan sudah ada model makanan
 import 'package:PETA_RASA/screens/detail_screen.dart'; // Pastikan DetailScreen sudah ada
 
 class SearchScreen extends StatefulWidget {
@@ -11,7 +11,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  List<Makanan> _filteredCandis = makananList; // candiList sudah didefinisikan sebelumnya
+  List<Makanan> _filteredMakanans = makananList; // makananList sudah didefinisikan sebelumnya
   String _searchQuery = '';
   final TextEditingController _searchController = TextEditingController();
 
@@ -35,9 +35,9 @@ class _SearchScreenState extends State<SearchScreen> {
                 onChanged: (value) {
                   setState(() {
                     _searchQuery = value.toLowerCase();
-                    _filteredCandis = makananList.where((candi) {
-                      return candi.name.toLowerCase().contains(_searchQuery) ||
-                          candi.location.toLowerCase().contains(_searchQuery);
+                    _filteredMakanans = makananList.where((makanan) {
+                      return makanan.name.toLowerCase().contains(_searchQuery) ||
+                          makanan.location.toLowerCase().contains(_searchQuery);
                     }).toList();
                   });
                 },
@@ -51,7 +51,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       setState(() {
                         _searchQuery = '';
                         _searchController.clear();
-                        _filteredCandis = makananList;
+                        _filteredMakanans = makananList;
                       });
                     },
                   )
@@ -69,16 +69,16 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: _filteredCandis.length,
+              itemCount: _filteredMakanans.length,
               itemBuilder: (context, index) {
-                final candi = _filteredCandis[index];
+                final makanan = _filteredMakanans[index];
                 return InkWell(
                   onTap: () {
-                    // Navigasi ke DetailScreen dengan membawa data candi
+                    // Navigasi ke DetailScreen dengan membawa data makanan
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DetailScreen(makanan: candi),
+                        builder: (context) => DetailScreen(makanan: makanan),
                       ),
                     );
                   },
@@ -94,7 +94,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: Image.asset(
-                              candi.imageAsset,
+                              makanan.imageAsset,
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -105,7 +105,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                candi.name,
+                                makanan.name,
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -113,7 +113,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                candi.location,
+                                makanan.location,
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
