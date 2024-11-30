@@ -114,7 +114,11 @@ var makananList = [
         location: 'Papua',
         popularity: '',
         description: 'Papeda adalah makanan berupa bubur sagu yang berasal dari pesisir Papua. Hidangan ini biasanya disajikan dengan ikan tongkol atau bubara yang dibumbui dengan kunyit. Papeda berwarna putih dan bertekstur lengket menyerupai lem dengan rasa yang tawar.',
-        imageAsset: imageAsset,
+        imageAsset: 'images/papeda.jpeg',
+        imageAsset2: [
+          'images/bahan_papeda.png',
+          'images/tutor_papeda.png',
+        ],
         isFavorite: false,
   ),
   Makanan(
@@ -122,7 +126,11 @@ var makananList = [
         location: 'Pasuruan, Jawa Timur',
         popularity: '',
         description: 'Klepon (bahasa Jawa: ꧋ꦏ꧀ꦊꦥꦺꦴꦤ꧀, translit. klêpon), dikenal pula sebagai onde-onde, adalah sejenis kue atau penganan kukus yang dibuat dari tepung ketan yang dibulatkan, diisi gula merah dan dibalurkan di atas kelapa parut hingga melekat.',
-        imageAsset: imageAsset,
+        imageAsset: 'images/klepon.jpeg',
+        imageAsset2: [
+          'images/bahan_klepon.png',
+          'images/tutor_klepon.png',
+        ],
         isFavorite: false,
   ),
   Makanan(
@@ -130,7 +138,11 @@ var makananList = [
         location: 'Betawi, DKI Jakarta',
         popularity: '',
         description: 'Gado-gado adalah makanan yang terdiri atas sayur-sayuran, kentang, tempe, tahu, telur rebus, dan lain-lain diberi bumbu sambal kacang dan sebagainya.',
-        imageAsset: imageAsset,
+        imageAsset: 'images/gado_gado.jpeg',
+        imageAsset2: [
+          'images/bahan_gado-gado.png',
+          'images/tutor_gado-gado.png',
+        ],
         isFavorite: false,
   ),
   Makanan(
@@ -138,7 +150,11 @@ var makananList = [
         location: 'Medan, Sumatera Utara',
         popularity: '',
         description: 'Bika Ambon adalah kue tradisional khas Medan, Indonesia. Kue ini terbuat dari bahan-bahan seperti tepung tapioka, telur, gula, dan santan.',
-        imageAsset: imageAsset,
+        imageAsset: 'images/bika_ambon.jpeg',
+        imageAsset2: [
+          'images/bahan_bika_ambon.png',
+          'images/tutor_bika_ambon.png',
+        ],
         isFavorite: false,
   ),
   Makanan(
@@ -146,7 +162,11 @@ var makananList = [
         location: 'Banda Aceh, Aceh',
         popularity: '',
         description: 'Mi aceh adalah masakan mi pedas khas Aceh di Indonesia. Mi kuning tebal dengan irisan daging sapi, daging kambing atau makanan laut (udang dan cumi) disajikan dalam sup sejenis kari yang gurih dan pedas.',
-        imageAsset: imageAsset,
+        imageAsset: 'images/mie_aceh.jpeg',
+         imageAsset2: [
+          'images/bahan_mie_aceh.png',
+          'images/tutor_mie_aceh.png',
+        ],
         isFavorite: false,
   ),
   Makanan(
@@ -154,7 +174,11 @@ var makananList = [
         location: 'Cianjur, Jawa Barat',
         popularity: 'Rank 67 rat: 4.51 source: tasteatlas AWARD 23/24',
         description: 'Bubur ayam adalah salah satu jenis makanan dari Indonesia. Bubur nasi adalah beras yang dimasak dengan air yang banyak sehingga memiliki tekstur yang lembut dan berair. Bubur biasanya disajikan dalam suhu panas atau hangat.',
-        imageAsset: imageAsset,
+        imageAsset: 'images/bubur_ayam.jpeg',
+         imageAsset2: [
+          'images/bahan_bubur_ayam.png',
+          'images/tutor_bubur_ayam.png',
+        ],
         isFavorite: false,
   ),
 ];
