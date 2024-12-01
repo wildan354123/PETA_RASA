@@ -135,16 +135,16 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                   Row(
                     children: [
-                      const Icon(Icons.emoji_events, color: Colors.red),
+                      const Icon(Icons.category, color: Colors.red), 
                       const SizedBox(width: 9),
                       const SizedBox(
                         width: 70,
                         child: Text(
-                          'Popularitas',
+                          'Kategori Makanan', 
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Text(': ${widget.makanan.popularity}'),
+                      Text(': ${widget.makanan.category}'), 
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -254,3 +254,4 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 }
+
