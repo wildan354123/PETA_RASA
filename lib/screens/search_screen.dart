@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:PETA_RASA/data/makanan_data.dart'; // Pastikan sudah ada data makanan
-import 'package:PETA_RASA/models/makanan.dart'; // Pastikan sudah ada model makanan
-import 'package:PETA_RASA/screens/detail_screen.dart'; // Pastikan DetailScreen sudah ada
+import 'package:PETA_RASA/data/makanan_data.dart';
+import 'package:PETA_RASA/models/makanan.dart';
+import 'package:PETA_RASA/screens/detail_screen.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -11,7 +11,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  List<Makanan> _filteredMakanans = makananList; // makananList sudah didefinisikan sebelumnya
+  List<Makanan> _filteredMakanans = makananList;
   String _searchQuery = '';
   final TextEditingController _searchController = TextEditingController();
 
