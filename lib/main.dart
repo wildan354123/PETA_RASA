@@ -1,221 +1,179 @@
-// Controllers untuk input username dan password
-final TextEditingController _usernameController = TextEditingController();
-final TextEditingController _passwordController = TextEditingController();
-final Logger _logger = Logger(); // Untuk logging
-SignUpScreen({super.key});
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: const Text('Sign Up'), // Judul halaman
-    ),
-    body: Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          // Input field untuk username
-          TextField(
-            controller: _usernameController,
-            decoration: const InputDecoration(
-              labelText: 'Username',
-              border: OutlineInputBorder(),
-            ),
-          ),
-          const SizedBox(height: 20),
-          // Input field untuk password
-          TextField(
-            controller: _passwordController,
-            decoration: const InputDecoration(
-              labelText: 'Password',
-              border: OutlineInputBorder(),
-            ),
-            obscureText: true,
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              _performSignUp(context); // Tombol Sign Up
-            },
-            child: const Text('Sign Up'),
-          ),
-        ],
-      ),
-    ),
-  );
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:PETA_RASA/screens/home_screen.dart';
+import 'package:PETA_RASA/screens/profile_screen.dart';
+import 'package:PETA_RASA/screens/search_screen.dart';
+import 'package:PETA_RASA/screens/sign_in.dart';
+import 'package:PETA_RASA/screens/sign_up.dart';
+import 'package:PETA_RASA/screens/favorite_screen.dart';
+import 'package:PETA_RASA/provider/favorites_provider.dart';
+import 'package:PETA_RASA/provider/signin_provider.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final bool isSignedIn = prefs.getBool('isSignedIn') ?? false;
+  runApp(MyApp(isSignedIn));
 }
-// Fungsi untuk melakukan proses sign up
-void _performSignUp(BuildContext context) {
-  try {
-    final prefs = SharedPreferences.getInstance();
-    _logger.d('Sign up attempt');
-    final String username = _usernameController.text;
-    final String password = _passwordController.text;
-    // Memeriksa apakah username atau password kosong sebelum melanjutkan sign-up
-    if (username.isNotEmpty && password.isNotEmpty) {
-      final encrypt.Key key = encrypt.Key.fromLength(32);
-      final iv = encrypt.IV.fromLength(16);
-      final encrypter = encrypt.Encrypter(encrypt.AES(key));
-      final encryptedUsername = encrypter.encrypt(username, iv: iv);
-      final encryptedPassword = encrypter.encrypt(password, iv: iv);
-      _saveEncryptedDataToPrefs(
-        prefs,
-        encryptedUsername.base64,
-        encryptedPassword.base64,
-        key.base64,
-        iv.base64,
-      ).then((_) {
-        Navigator.pop(context);
-        _logger.d('Sign up succeeded');
-      });
-    } else {
-      _logger.e('Username or password cannot be empty');
-    }
-  } catch (e) {
-    _logger.e('An error occurred: $e');
+
+class MyApp extends StatelessWidget {
+  final bool isSignedIn;
+  const MyApp(this.isSignedIn, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => SignInProvider()),
+        ChangeNotifierProvider(create: (_) => FavoritesProvider()),
+      ],
+      child: MaterialApp(
+        title: 'PETA RASA',
+        theme: ThemeData(
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.deepOrange,
+            titleTextStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange).copyWith(
+            primary: Colors.deepOrange,
+            secondary: Colors.deepOrangeAccent,
+            surface: Colors.deepOrange[50],
+            onSurface: Colors.deepOrange[800],
+          ),
+          scaffoldBackgroundColor: Colors.deepOrange[50],
+          useMaterial3: true,
+        ),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const MainScreen(),
+          '/signin': (context) => const SignInScreen(),
+          '/signup': (context) => const SignUpScreen(),
+          '/favorite': (context) => const FavoriteScreen(),
+        },
+      ),
+    );
   }
 }
-// Fungsi untuk menyimpan data terenkripsi ke SharedPreferences
-Future<void> _saveEncryptedDataToPrefs(
-    Future<SharedPreferences> prefs,
-    String encryptedUsername,
-    String encryptedPassword,
-    String keyString,
-    String ivString,
-    ) async {
-  final sharedPreferences = await prefs;
-  // Logging: menyimpan data pengguna ke SharedPreferences
-  _logger.d('Saving user data to SharedPreferences');
-  await sharedPreferences.setString('username', encryptedUsername);
-  await sharedPreferences.setString('password', encryptedPassword);
-  await sharedPreferences.setString('key', keyString);
-  await sharedPreferences.setString('iv', ivString);
+
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
 }
-}
-// Kelas SignInScreen, tampilan untuk proses sign in
-class SignInScreen extends StatelessWidget {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final Logger _logger = Logger(); // Untuk logging
-  SignInScreen({super.key});
+
+class _MainScreenState extends State<MainScreen> {
+  int _currentIndex = 0;
+  final PageController _pageController = PageController();
+  final List<Widget> _children = [
+    const HomeScreen(),
+    const SearchScreen(),
+    const FavoriteScreen(),
+    const ProfileScreen(),
+  ];
+
+  void _onTap(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+    _pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sign In'), // Judul halaman
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        children: _children,
+        physics: const BouncingScrollPhysics(),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            // Input field untuk username
-            TextField(
-              controller: _usernameController,
-              decoration: const InputDecoration(
-                labelText: 'Username',
-                border: OutlineInputBorder(),
-              ),
+      bottomNavigationBar: Container(
+        margin: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.deepOrange,
+          borderRadius: BorderRadius.circular(30),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.deepOrange.withOpacity(0.3),
+              blurRadius: 10,
+              offset: const Offset(0, 5),
             ),
-            const SizedBox(height: 20),
-            // Input field untuk password
-            TextField(
-              controller: _passwordController,
-              decoration: const InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),
-              ),
-              obscureText: true,
+          ],
+        ),
+        child: BottomNavigationBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          currentIndex: _currentIndex,
+          onTap: _onTap,
+          type: BottomNavigationBarType.fixed,
+          selectedFontSize: 12,
+          unselectedFontSize: 12,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.white70,
+          items: [
+            BottomNavigationBarItem(
+              icon: _buildIcon(Icons.home, 0),
+              label: 'Home',
             ),
-            const SizedBox(height: 20),
-            // Tombol Sign In
-            ElevatedButton(
-              onPressed: () {
-                _performSignIn(context);
-              },
-              child: const Text('Sign In'),
+            BottomNavigationBarItem(
+              icon: _buildIcon(Icons.search, 1),
+              label: 'Search',
             ),
-            const SizedBox(height: 20),
-            // Tombol untuk pindah ke halaman pendaftaran
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SignUpScreen()),
-                );
-              },
-              child: const Text('Sign Up'),
+            BottomNavigationBarItem(
+              icon: _buildIcon(Icons.favorite, 2),
+              label: 'Favorite',
+            ),
+            BottomNavigationBarItem(
+              icon: _buildIcon(Icons.person, 3),
+              label: 'Profile',
             ),
           ],
         ),
       ),
     );
   }
-  // Fungsi untuk melakukan proses sign in
-  void _performSignIn(BuildContext context) {
-    try {
-      final prefs = SharedPreferences.getInstance();
-      final String username = _usernameController.text;
-      final String password = _passwordController.text;
-      _logger.d('Sign in attempt');
-      if (username.isNotEmpty && password.isNotEmpty) {
-        _retrieveAndDecryptDataFromPrefs(prefs).then((data) {
-          if (data.isNotEmpty) {
-            final decryptedUsername = data['username'];
-            final decryptedPassword = data['password'];
-            if (username == decryptedUsername && password == decryptedPassword) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const HomeScreen()),
-              );
-              _logger.d('Sign in succeeded');
-            } else {
-              _logger.e('Username or password is incorrect');
-            }
-          } else {
-            _logger.e('No stored credentials found');
-          }
-        });
-      } else {
-        _logger.e('Username and password cannot be empty');
-        // Tambahkan pesan untuk kasus ketika username atau password kosong
-      }
-    } catch (e) {
-      _logger.e('An error occurred: $e');
-    }
-  }
-  // Fungsi untuk mengambil dan mendekripsi data dari SharedPreferences
-  Future<Map<String, String>> _retrieveAndDecryptDataFromPrefs(
-      Future<SharedPreferences> prefs,
-      ) async {
-    final sharedPreferences = await prefs;
-    final encryptedUsername = sharedPreferences.getString('username') ?? '';
-    final encryptedPassword = sharedPreferences.getString('password') ?? '';
-    final keyString = sharedPreferences.getString('key') ?? '';
-    final ivString = sharedPreferences.getString('iv') ?? '';
-    final encrypt.Key key = encrypt.Key.fromBase64(keyString);
-    final iv = encrypt.IV.fromBase64(ivString);
-    final encrypter = encrypt.Encrypter(encrypt.AES(key));
-    final decryptedUsername =
-    encrypter.decrypt64(encryptedUsername, iv: iv);
-    final decryptedPassword =
-    encrypter.decrypt64(encryptedPassword, iv: iv);
-    // Mengembalikan data terdekripsi
-    return {'username': decryptedUsername, 'password': decryptedPassword};
-  }
-}
-// Kelas HomeScreen, halaman utama setelah berhasil sign in
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'), // Judul halaman
+
+  Widget _buildIcon(IconData icon, int index) {
+    final isSelected = _currentIndex == index;
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: isSelected ? Colors.white : Colors.transparent,
+        shape: BoxShape.circle,
+        boxShadow: isSelected
+            ? [
+          BoxShadow(
+            color: Colors.white.withOpacity(0.4),
+            blurRadius: 6,
+          )
+        ]
+            : null,
       ),
-      body: const Center(
-        child: Text('Welcome!'), // Pesan selamat datang
+      child: Icon(
+        icon,
+        color: isSelected ? Colors.deepOrange : Colors.white70,
+        size: 24,
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 }
