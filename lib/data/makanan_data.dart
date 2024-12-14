@@ -8,8 +8,7 @@ var makananList = [
       description: 'Pempek, mpek-mpek, atau dalam bahasa Indonesia gaul empek-empek, adalah makanan khas Palembang, Sumatera Selatan. Proses pembuatannya yakni dibuat dari daging ikan Tenggiri bisa juga ikan gabus yang digiling lembut, dicampur tepung kanji atau tepung sagu, serta dengan penambahan komposisi bahan lain seperti telur, bawang putih yang dihaluskan, penyedap rasa, dan garam. Pempek biasanya disajikan dengan kuah yang disebut cuko yang memiliki rasa asam, manis, dan pedas.',
       imageAsset: 'images/pempek.jpeg',
       imageAsset2: [
-        'images/bahan_pempek.png',
-        'images/tutor_pempek.png',
+        'images/resep_pempek.png',
       ],
       isFavorite: false,
   ),
@@ -20,8 +19,7 @@ var makananList = [
     description: 'Rendang (bahasa Minangkabau: randang; Jawi: رندڠ, Batak: ᯒᯉᯢᯝ) adalah hidangan berbahan dasar daging yang dihasilkan dari proses memasak suhu rendah dalam waktu lama dengan menggunakan aneka rempah-rempah dan santan. Proses memasaknya memakan waktu berjam-jam (biasanya sekitar empat jam) hingga yang tinggal hanyalah potongan daging berwarna hitam pekat dan dedak. Dalam suhu ruangan, rendang dapat bertahan hingga berminggu-minggu. Rendang yang dimasak dalam waktu yang lebih singkat dan santannya belum mengering disebut kalio, berwarna cokelat terang keemasan.',
     imageAsset: 'images/rendang.jpeg',
     imageAsset2: [
-      'images/bahan_rendang.png',
-      'images/tutor_rendnag.png',
+      'images/resep_rendang.png',
     ],
     isFavorite: false,
   ),
@@ -32,8 +30,7 @@ var makananList = [
     description: 'Rendang (bahasa Minangkabau: randang; Jawi: رندڠ, Batak: ᯒᯉᯢᯝ) adalah hidangan berbahan dasar daging yang dihasilkan dari proses memasak suhu rendah dalam waktu lama dengan menggunakan aneka rempah-rempah dan santan. Proses memasaknya memakan waktu berjam-jam (biasanya sekitar empat jam) hingga yang tinggal hanyalah potongan daging berwarna hitam pekat dan dedak. Dalam suhu ruangan, rendang dapat bertahan hingga berminggu-minggu. Rendang yang dimasak dalam waktu yang lebih singkat dan santannya belum mengering disebut kalio, berwarna cokelat terang keemasan.',
     imageAsset: 'images/sate.jpeg',
     imageAsset2: [
-      'images/bahan_sate.png',
-      'images/tutor_sate.png',
+      'images/resep_sate_padang.png',
     ],
     isFavorite: false,
   ),
@@ -44,8 +41,7 @@ var makananList = [
     description: 'Nasi Goreng Kampung adalah hidangan tinggi kandungan protein yang mengkombinasikan nasi goreng kampung dengan gurih dari terasi, telor ceplok, acar, lalapan, dan kerupuk.',
     imageAsset: 'images/nasi_goreng_kampung.jpeg',
     imageAsset2: [
-      'images/bahan_nasi_goreng_kampung.png',
-      'images/tutor_nasi_goreng_kampung.png',
+      'images/resep_nasi_goreng_kampung.png',
     ],
     isFavorite: false,
   ),
@@ -116,8 +112,7 @@ var makananList = [
         description: 'Papeda adalah makanan berupa bubur sagu yang berasal dari pesisir Papua. Hidangan ini biasanya disajikan dengan ikan tongkol atau bubara yang dibumbui dengan kunyit. Papeda berwarna putih dan bertekstur lengket menyerupai lem dengan rasa yang tawar.',
         imageAsset: 'images/papeda.jpeg',
         imageAsset2: [
-          'images/bahan_papeda.png',
-          'images/tutor_papeda.png',
+          'images/resep_papeda.png',
         ],
         isFavorite: false,
   ),
@@ -128,8 +123,7 @@ var makananList = [
         description: 'Klepon (bahasa Jawa: ꧋ꦏ꧀ꦊꦥꦺꦴꦤ꧀, translit. klêpon), dikenal pula sebagai onde-onde, adalah sejenis kue atau penganan kukus yang dibuat dari tepung ketan yang dibulatkan, diisi gula merah dan dibalurkan di atas kelapa parut hingga melekat.',
         imageAsset: 'images/klepon.jpeg',
         imageAsset2: [
-          'images/bahan_klepon.png',
-          'images/tutor_klepon.png',
+          'images/resep_klepon.png',
         ],
         isFavorite: false,
   ),
@@ -164,8 +158,7 @@ var makananList = [
         description: 'Mi aceh adalah masakan mi pedas khas Aceh di Indonesia. Mi kuning tebal dengan irisan daging sapi, daging kambing atau makanan laut (udang dan cumi) disajikan dalam sup sejenis kari yang gurih dan pedas.',
         imageAsset: 'images/mie_aceh.jpeg',
          imageAsset2: [
-          'images/bahan_mie_aceh.png',
-          'images/tutor_mie_aceh.png',
+          'images/resep_mie_aceh.png',
         ],
         isFavorite: false,
   ),
