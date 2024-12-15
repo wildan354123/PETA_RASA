@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.lightGreen,
         elevation: 5,
       ),
       body: Container(
@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Colors.deepOrange,
+                color: Colors.lightGreen,
               ),
             ),
             const SizedBox(height: 20),

@@ -42,8 +42,8 @@ class _MainScreenState extends State<MainScreen> {
             _currentIndex = index;
           });
         },
-        children: _children,
         physics: const BouncingScrollPhysics(),
+        children: _children,
       ),
       bottomNavigationBar: Container(
         margin: const EdgeInsets.all(10),

@@ -93,7 +93,7 @@ class _TampilanProfileState extends State<ProfileScreen> {
   Future<void> _logout() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('isLoggedIn'); // Hanya menghapus status login
-    Navigator.pushReplacementNamed(context, '/');
+    Navigator.pushReplacementNamed(context, '/signin');
   }
 
 

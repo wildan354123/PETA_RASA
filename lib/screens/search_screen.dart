@@ -28,7 +28,7 @@ class _SearchScreenState extends State<SearchScreen> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color: Colors.deepOrange[50],
+                color: Colors.white,
               ),
               child: TextField(
                 controller: _searchController,
@@ -115,8 +115,8 @@ class _SearchScreenState extends State<SearchScreen> {
                               Text(
                                 makanan.location,
                                 style: const TextStyle(
+                                  color: Colors.grey,
                                   fontSize: 16,
-                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ],
