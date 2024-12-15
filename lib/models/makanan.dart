@@ -17,7 +17,5 @@ class Makanan{
     required this.imageAsset2,
     this.isFavorite = false,
     this.rating = 0.0,
-
 });
-
 }
