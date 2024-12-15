@@ -52,8 +52,7 @@ var makananList = [
     description: 'Gudeg (bahasa Jawa: Guděg) adalah hidangan khas Daerah Istimewa Yogyakarta yang terbuat dari nangka muda yang dimasak dengan santan. Perlu waktu berjam-jam untuk membuat hidangan gudeg. Warna cokelat biasanya dihasilkan oleh daun jati yang dimasak bersamaan. Gudeg biasanya dimakan dengan nasi dan disajikan dengan kuah santan kental (areh), ayam kampung, telur, tempe, tahu, dan sambal goreng krecek.Gudeg sangat populer di Jawa, hidangan ini merupakan hidangan populer baik sebagai masakan rumahan maupun hidangan jalanan. Gudeg juga diproduksi secara industri sebagai makanan kaleng. Gudeg juga bisa ditemui di luar Indonesia, khususnya di negara tetangga seperti Malaysia dan Singapura.',
     imageAsset: 'images/gudeg.jpeg',
     imageAsset2: [
-      'images/bahan_gudeg.png',
-      'images/tutor_gudeg.png',
+     'images/resep_gudeg.png',
     ],
     isFavorite: false,
   ),
@@ -64,8 +63,7 @@ var makananList = [
     description: 'Bakso Malang adalah hidangan bakso yang banyak ditemui di seluruh belahan Kota Malang dan Kabupaten Malang, Jawa Timur. Mirip dengan hidangan bakso lainnya, hidangan tersebut terdiri dari daging yang dibentuk bundar dan mie. Bedanya ada pada penambahan kulit pangsit yang digoreng dan tahu yang digoreng.',
     imageAsset: 'images/bakso_malang.jpeg',
     imageAsset2: [
-      'images/bahan_bakso_malang.png',
-      'images/tutor_bakso_malang.png',
+      'images/resep_bakso_malang.png',
     ],
     isFavorite: false,
   ),
@@ -76,8 +74,7 @@ var makananList = [
         description: 'Rawon (Aksara Jawa:ꦫꦮꦺꦴꦤ꧀) adalah masakan khas Indonesia yang berasal dari Ponorogo, Jawa Timur, yang berupa sup daging berkuah hitam dengan campuran bumbu khas yang menggunakan kluwek.',
         imageAsset: 'images/rawon.jpeg',
         imageAsset2: [
-          'images/bahan_Rawon.png',
-          'images/tutor_Rawon.png',
+          'images/resep_rawon.png',
         ],
         isFavorite: false,
   ),
@@ -88,8 +85,7 @@ var makananList = [
         description: 'Soto Betawi merupakan jenis soto dari daerah DKI Jakarta. Selain jeroan, sering kali organ-organ lain juga disertakan, seperti mata, terpedo, penis sapi dan juga hati.',
         imageAsset: 'images/soto_betawi.jpeg',
         imageAsset2: [
-          'images/bahan_Soto_Betawi.png',
-          'images/tutor_Soto_Betawi.png',
+          'images/resep_soto_betawi.png',
         ],
         isFavorite: false,
   ),
@@ -100,8 +96,7 @@ var makananList = [
         description: 'Kerak telur adalah makanan asli daerah Jakarta (Betawi), dengan bahan-bahan beras ketan putih, telur ayam atau bebek, ebi (udang kering yang diasinkan), ditambah bawang merah goreng, lalu diberi bumbu yang dihaluskan berupa kelapa sangrai, cabai merah, kencur, jahe, kunyit,sereh halus, merica butiran, garam dan gula pasir.',
         imageAsset: 'images/kerak_telor.jpeg',
         imageAsset2: [
-          'images/bahan_kerak_telur.png',
-          'images/tutor_kerak_telur.png',
+          'images/resep_kerak_telur.png',
         ],
         isFavorite: false,
   ),
@@ -134,8 +129,7 @@ var makananList = [
         description: 'Gado-gado adalah makanan yang terdiri atas sayur-sayuran, kentang, tempe, tahu, telur rebus, dan lain-lain diberi bumbu sambal kacang dan sebagainya.',
         imageAsset: 'images/gado_gado.jpeg',
         imageAsset2: [
-          'images/bahan_gado-gado.png',
-          'images/tutor_gado-gado.png',
+          'images/resep_gado_gado.png',
         ],
         isFavorite: false,
   ),
@@ -146,8 +140,7 @@ var makananList = [
         description: 'Bika Ambon adalah kue tradisional khas Medan, Indonesia. Kue ini terbuat dari bahan-bahan seperti tepung tapioka, telur, gula, dan santan.',
         imageAsset: 'images/bika_ambon.jpeg',
         imageAsset2: [
-          'images/bahan_bika_ambon.png',
-          'images/tutor_bika_ambon.png',
+          'images/resep_bika_ambon.png',
         ],
         isFavorite: false,
   ),
@@ -169,8 +162,7 @@ var makananList = [
         description: 'Bubur ayam adalah salah satu jenis makanan dari Indonesia. Bubur nasi adalah beras yang dimasak dengan air yang banyak sehingga memiliki tekstur yang lembut dan berair. Bubur biasanya disajikan dalam suhu panas atau hangat.',
         imageAsset: 'images/bubur_ayam.jpeg',
          imageAsset2: [
-          'images/bahan_bubur_ayam.png',
-          'images/tutor_bubur_ayam.png',
+          'images/resep_bubur_ayam.png',
         ],
         isFavorite: false,
   ),
