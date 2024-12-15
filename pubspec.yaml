@@ -18,6 +18,8 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   carousel_slider: ^5.0.0
   gestures: ^1.0.0
+  encrypt: ^5.0.3
+  image_picker: ^1.1.2
 
 
 dev_dependencies:

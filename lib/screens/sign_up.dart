@@ -1,121 +1,324 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:PETA_RASA/screens/sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:encrypt/encrypt.dart' as encrypt;
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<SignUpScreen> createState() => _RegissterScreensState();
 }
+class _RegissterScreensState extends State<SignUpScreen> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final namaLengkapController = TextEditingController();
+  final userNameController = TextEditingController();
+  bool _isSignIn = false;
+  bool _obscurePassword = false;
 
-class _SignUpScreenState extends State<SignUpScreen> {
-  // TODO: 1. Deklarasikan variabel
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _fullnameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  String? _errorNamaLengkap;
+  String? _errorUserName ;
+  String? _errorEmail ;
+  String? _errorPassword;
 
-  String _errorText = '';
-
-  bool _obscurePassword = true;
-
-  //TODO: 1.Membuat method _signUp
-  void _signUp()async{
+  void _signUp() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String name = _fullnameController.text.trim();
-    final String username = _usernameController.text.trim();
-    final String password = _passwordController.text.trim();
+    String NamaLengkap = namaLengkapController.text.trim();
+    String UserName = userNameController.text.trim();
+    String Email = emailController.text.trim();
+    String Password = passwordController.text.trim();
 
-    if(password.length < 8 ||
-        !password.contains(RegExp(r'[A-Z]'))||
-        !password.contains(RegExp(r'[a-z]'))||
-        !password.contains(RegExp(r'[0-9]'))||
-        !password.contains(RegExp(r'[!@#\\\$%^&*(),.?":{}|<>]'))){
+    setState(() {
+      _errorNamaLengkap = null;
+      _errorUserName = null;
+      _errorEmail = null;
+      _errorPassword = null;
+    });
+    bool hasError = false;
+
+    if(NamaLengkap.isEmpty){
       setState(() {
-        _errorText = 'Minimal 8 karakter, kombinasi [A-Z], [a-z], [0-9], [!@#\\\$%^&*(),.?":{}|<>]';
+        _errorNamaLengkap = 'Nama lengkap tidak boleh kososng';
       });
+      hasError = true;
+    }
+    if(UserName.isEmpty) {
+      setState(() {
+        _errorUserName = 'Username Tidak Boleh kosong';
+      });
+      hasError = true;
+    }
+    if(Email.isEmpty){
+      setState(() {
+        _errorEmail = 'Email Tidak Boleh kosong';
+      });
+      hasError = true;
+    }if
+    (!RegExp(r"^[^@]+@[^@]+\.[^@]+$").hasMatch(Email)){
+      setState(() {
+        _errorEmail = 'Format Email tidak valid';
+      });
+      hasError = true;
+    }
+
+    if (Password.length < 6 ||
+        !Password.contains(RegExp(r'[A-Z]')) ||
+        !Password.contains(RegExp(r'[a-z]')) ||
+        !Password.contains(RegExp(r'[0-9]')) ||
+        !Password.contains(RegExp(r'[!@#$%^&*()<>,.?"/:;]'))) {
+      setState(() {
+        _errorPassword = 'Minimal 6 karakter, kombinasi [A-Z], [a-z], [0-9], [!@#\\\$%^&*(),.?":{}|<>]';
+      });
+      hasError = true;
+    }
+    if(hasError){
       return;
     }
-    //simpan data pengguna di SharedPreferences
-    prefs.setString('Full Name', name);
-    prefs.setString('Username', username);
-    prefs.setString('Password', password);
+    if (NamaLengkap.isNotEmpty && UserName.isNotEmpty && Email.isNotEmpty && Password.isNotEmpty){
+      final encrypt.Key key = encrypt.Key.fromLength(32);
+      final iv = encrypt.IV.fromLength(16);
 
-    //buat navigasi ke signinscreen
+      final encrypter = encrypt.Encrypter(encrypt.AES(key));
+      final encryptedNamaLengkap = encrypter.encrypt(NamaLengkap, iv: iv);
+      final encryptedUsername = encrypter.encrypt(UserName, iv: iv);
+      final encryptedEmail = encrypter.encrypt(Email, iv: iv);
+      final encryptedPassword = encrypter.encrypt(Password, iv: iv);
+
+
+      prefs.setString('NamaLengkap', encryptedNamaLengkap.base64);
+      prefs.setString('UserName', encryptedUsername.base64);
+      prefs.setString('Email', encryptedEmail.base64);
+      prefs.setString('Password', encryptedPassword.base64);
+      prefs.setString ('key', key.base64);
+      prefs.setString ('iv', iv.base64);
+    }
+
     Navigator.pushReplacementNamed(context, '/signin');
   }
 
-
-  //TODO: 2.Membuat method dispose
   @override
-  void dispose(){
-    //TODO: Implement dispose
-    _fullnameController.dispose();
-    _usernameController.dispose();
-    _passwordController.dispose();
+  void dispose() {
+    // TODO: implement dispose
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // TODO: 2. Pasang AppBar
-      appBar: AppBar(title: const Text('Sign Up')),
-      // TODO: 3. Pasang body
+      appBar: AppBar(
+        title: Text(
+          "Register",
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.blue,
+        elevation: 0,
+      ),
       body: SingleChildScrollView(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Form(
-                child: Column(
-                  // TODO: 4. Atur mainAxisAlignment dan crossAxisAlignment
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    TextFormField(
-                      controller: _fullnameController,
-                      decoration: const InputDecoration(
-                        labelText: "Nama Lengkap Pengguna",
-                        border: OutlineInputBorder(),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Image.asset("assets/images/Mobile_register.png",
+                  width: 300,
+                  height: 250),
+              const SizedBox(height: 16,),
+              Text("Register Detail",
+                style: TextStyle(fontSize: 20),
+              ),
+
+              const SizedBox(height: 24,),
+              TextField(
+                controller: namaLengkapController,
+                textInputAction: TextInputAction.next,
+                decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        width: 1,
+                        color: Colors.blue,
+                      ),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        width: 1.0,
+                        color: Colors.blue,
+                      ),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: Colors.red,
                       ),
                     ),
-                    // TODO: 6. Pasang TextFormField Nama Pengguna
-                    const SizedBox(height: 20),
-                    TextFormField(
-                      controller: _usernameController,
-                      decoration: const InputDecoration(
-                        labelText: "Nama Pengguna",
-                        border: OutlineInputBorder(),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: Colors.red,
                       ),
                     ),
-                    // TODO: 7. Pasang TextFormField Kata Sandi
-                    const SizedBox(height: 20),
-                    TextFormField(
-                      controller: _passwordController,
-                      decoration: InputDecoration(
-                        labelText: "Kata Sandi",
-                        errorText: _errorText.isNotEmpty ? _errorText : null,
-                        border: const OutlineInputBorder(),
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              _obscurePassword = ! _obscurePassword;
-                            });
-                          },
-                          icon: Icon(
-                            _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                    hintText: "Nama Lengkap",
+                    errorText: _errorNamaLengkap
+                ),
+              ),
+              const SizedBox(height: 16,),
+              TextField(
+                controller: userNameController,
+                textInputAction: TextInputAction.next,
+                decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        width: 1.0,
+                        color: Colors.blue,
+                      ),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                          width: 1.0,
+                          color: Colors.blue
+                      ),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 1,
+                          color: Colors.red
+                      ),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: Colors.red,
+                      ),
+                    ),
+                    hintText: "User Name",
+                    errorText: _errorUserName
+                ),
+              ),
+              const SizedBox(height: 16,),
+              TextField(
+                controller: emailController,
+                keyboardType: TextInputType.emailAddress,
+                textInputAction: TextInputAction.next,
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                      width: 1.0,
+                      color: Colors.blue,
+                    ),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide (
+                      width: 1.0,
+                      color: Colors.blue,
+                    ),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 1,
+                        color: Colors.red
+                    ),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 1,
+                        color: Colors.red
+                    ),
+                  ),
+                  hintText: "Email",
+                  errorText: _errorEmail,
+                ),
+              ),
+              const SizedBox(height: 16,),
+              TextField(
+                controller: passwordController,
+                textInputAction: TextInputAction.next,
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide (
+                      width: 1.0,
+                      color: Colors.blue,
+                    ),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide (
+                      width: 1.0,
+                      color: Colors.blue,
+                    ),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 1,
+                      color: Colors.red,
+                    ),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 1,
+                        color: Colors.red
+                    ),
+                  ),
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    },
+                    icon: Icon(
+                      _obscurePassword ? Icons.visibility_off
+                          : Icons.visibility,
+                    ),),
+                  hintText: "Password",
+                  errorText: _errorPassword,
+                ),
+                obscureText: _obscurePassword,
+              ),
+              const SizedBox(height: 24,),
+              ElevatedButton(
+                  onPressed: () {
+                    _signUp();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Text("Register",
+                        style: TextStyle(fontSize: 20, color: Colors.indigo)),
+                  )),
+              const SizedBox(height: 24,),
+              RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                    text: "Sudah Punya Akun ?",
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                    children: [
+                      TextSpan(
+                          text: "\nLogin di Sini",
+                          style: TextStyle(
+                            color: Colors.deepPurple,
+                            decoration: TextDecoration.underline,
+                            fontSize: 16,
                           ),
-                        ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        SignInScreen()),
+                              );
+                            }
                       ),
-                      obscureText: _obscurePassword,
-                    ),
-                    // TODO: 8. Pasang ElevatedButton Sign In
-                    const SizedBox(height: 20),
-                    ElevatedButton(onPressed: () {
-                      _signUp();
-                    }, child: const Text('Sign Up')),
-                  ],
-                )),
+                    ]
+                ),
+              ),
+            ],
           ),
         ),
       ),
