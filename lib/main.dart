@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:PETA_RASA/screens/sign_up.dart';
 import 'package:PETA_RASA/screens/favorite_screen.dart';
 import 'package:PETA_RASA/provider/favorites_provider.dart';
-import 'package:PETA_RASA/provider/signin_provider.dart';
 import 'package:PETA_RASA/widgets/navbar.dart';
 
 void main() async {
@@ -15,24 +14,18 @@ void main() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final bool isSignedIn = prefs.getBool('isSignedIn') ?? false;
 
-  // Membuat SignInProvider dan memuat status login
-  final signInProvider = SignInProvider();
-  await signInProvider.loadLoginStatus();  // Memuat status login dari SharedPreferences
-
-  runApp(MyApp(signInProvider, isSignedIn));
+  runApp(MyApp(isSignedIn));
 }
 
 class MyApp extends StatelessWidget {
-  final SignInProvider signInProvider;
   final bool isSignedIn;
 
-  const MyApp(this.signInProvider, this.isSignedIn, {super.key});
+  const MyApp(this.isSignedIn, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => signInProvider),
         ChangeNotifierProvider(create: (_) => FavoritesProvider()),
       ],
       child: MaterialApp(
@@ -55,7 +48,7 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: Colors.white,
           useMaterial3: true,
         ),
-        initialRoute: '/',
+        initialRoute: '/signin',
         routes: {
           '/': (context) => const MainScreen(),
           '/signin': (context) => const SignInScreen(),

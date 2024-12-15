@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             const SizedBox(height: 20),
             const Text(
-              'Rekomendasi Pilihan',
+              'Aneka Kuliner Indonesia',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,

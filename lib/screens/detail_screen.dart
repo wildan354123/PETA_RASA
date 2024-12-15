@@ -1,7 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:PETA_RASA/models/makanan.dart';
 import 'package:PETA_RASA/provider/favorites_provider.dart';
 
@@ -14,29 +14,9 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-  bool isLoggedIn = false; // Simulasi status login
-
   @override
   void initState() {
     super.initState();
-  }
-
-  void showLoginDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Login Diperlukan'),
-        content: const Text('Silakan login terlebih dahulu untuk menggunakan fitur favorit.'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context); // Tutup dialog
-            },
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
   }
 
   @override
@@ -48,7 +28,7 @@ class _DetailScreenState extends State<DetailScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Header gambar
+            // Detail header
             Stack(
               children: [
                 Padding(
@@ -77,20 +57,21 @@ class _DetailScreenState extends State<DetailScreen> {
                       icon: const Icon(Icons.arrow_back),
                     ),
                   ),
-                ),
+                )
               ],
             ),
-            // Detail makanan
+            // Detail info
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 16),
+                  // Info atas (rating dan tombol favorit)
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.end, // Menempatkan rating dan tombol di kanan
                     children: [
-                      // Rating
+                      // Rating di kiri, tombol favorite di kanan
                       RatingBar.builder(
                         initialRating: widget.makanan.rating,
                         minRating: 1,
@@ -109,14 +90,9 @@ class _DetailScreenState extends State<DetailScreen> {
                           });
                         },
                       ),
-                      const SizedBox(width: 8),
-                      // Tombol favorit
+                      const SizedBox(width: 8), // Memberikan jarak antara rating dan tombol favorite
                       IconButton(
                         onPressed: () {
-                          if (!isLoggedIn) {
-                            showLoginDialog(context);
-                            return;
-                          }
                           setState(() {
                             if (isFavorite) {
                               favoritesProvider.removeFavorite(widget.makanan);
@@ -132,8 +108,8 @@ class _DetailScreenState extends State<DetailScreen> {
                       ),
                     ],
                   ),
+                  // Nama makanan di tengah
                   const SizedBox(height: 16),
-                  // Nama makanan
                   Text(
                     widget.makanan.name,
                     style: const TextStyle(
@@ -141,8 +117,8 @@ class _DetailScreenState extends State<DetailScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  // Info lokasi dan lainnya
                   const SizedBox(height: 16),
-                  // Lokasi dan kategori
                   Row(
                     children: [
                       const Icon(Icons.place, color: Colors.red),
@@ -151,24 +127,24 @@ class _DetailScreenState extends State<DetailScreen> {
                         width: 70,
                         child: Text(
                           'Lokasi',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black54),
                         ),
                       ),
-                      Text(': ${widget.makanan.location}'),
+                      Text(': ${widget.makanan.location}', style: TextStyle(color: Colors.black54),),
                     ],
                   ),
                   Row(
                     children: [
-                      const Icon(Icons.category, color: Colors.red),
+                      const Icon(Icons.category, color: Colors.yellow),
                       const SizedBox(width: 9),
                       const SizedBox(
                         width: 70,
                         child: Text(
                           'Kategori',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black54),
                         ),
                       ),
-                      Text(': ${widget.makanan.category}'),
+                      Text(': ${widget.makanan.category}', style: TextStyle(color: Colors.black54),),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -179,12 +155,10 @@ class _DetailScreenState extends State<DetailScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(
-
                         width: 70,
                         child: Text(
                           'Deskripsi',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -198,7 +172,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 ],
               ),
             ),
-            // Galeri gambar
+            // Gallery Section
             Padding(
               padding: const EdgeInsets.all(15),
               child: Column(
@@ -220,17 +194,18 @@ class _DetailScreenState extends State<DetailScreen> {
                           padding: const EdgeInsets.only(right: 8),
                           child: GestureDetector(
                             onTap: () {
+                              // Tampilkan gambar besar di dialog
                               showDialog(
                                 context: context,
                                 builder: (context) => Dialog(
                                   backgroundColor: Colors.transparent,
                                   child: GestureDetector(
                                     onTap: () {
-                                      Navigator.pop(context);
+                                      Navigator.pop(context); // Menutup dialog saat gambar diklik
                                     },
                                     child: CachedNetworkImage(
                                       imageUrl: widget.makanan.imageAsset2[index],
-                                      fit: BoxFit.contain,
+                                      fit: BoxFit.contain, // Pastikan gambar penuh
                                     ),
                                   ),
                                 ),
@@ -280,3 +255,4 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 }
+

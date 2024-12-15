@@ -129,7 +129,7 @@ class _LoginScreensState extends State<SignInScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Image.asset("assets/images/Mobile_login.png"),
+              Image.asset("Images/welcome.png"),
               const SizedBox(height: 16),
               const Text(
                 "Login Detail",

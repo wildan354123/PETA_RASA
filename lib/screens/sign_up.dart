@@ -112,7 +112,7 @@ class _RegissterScreensState extends State<SignUpScreen> {
           "Register",
         ),
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.lightGreen,
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -121,11 +121,9 @@ class _RegissterScreensState extends State<SignUpScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Image.asset("assets/images/Mobile_register.png",
-                  width: 300,
-                  height: 250),
+              Image.asset("Images/welcome.png"),
               const SizedBox(height: 16,),
-              Text("Register Detail",
+              Text("Register",
                 style: TextStyle(fontSize: 20),
               ),
 
@@ -137,14 +135,14 @@ class _RegissterScreensState extends State<SignUpScreen> {
                     enabledBorder: OutlineInputBorder(
                       borderSide: const BorderSide(
                         width: 1,
-                        color: Colors.blue,
+                        color: Colors.lightGreen,
                       ),
                       borderRadius: BorderRadius.circular(5),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: const BorderSide(
                         width: 1.0,
-                        color: Colors.blue,
+                        color: Colors.lightGreen,
                       ),
                       borderRadius: BorderRadius.circular(5),
                     ),
@@ -172,14 +170,14 @@ class _RegissterScreensState extends State<SignUpScreen> {
                     enabledBorder: OutlineInputBorder(
                       borderSide: const BorderSide(
                         width: 1.0,
-                        color: Colors.blue,
+                        color: Colors.lightGreen,
                       ),
                       borderRadius: BorderRadius.circular(5),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: const BorderSide(
                           width: 1.0,
-                          color: Colors.blue
+                          color: Colors.lightGreen
                       ),
                     ),
                     focusedErrorBorder: OutlineInputBorder(
@@ -208,14 +206,14 @@ class _RegissterScreensState extends State<SignUpScreen> {
                   enabledBorder: OutlineInputBorder(
                     borderSide: const BorderSide(
                       width: 1.0,
-                      color: Colors.blue,
+                      color: Colors.lightGreen,
                     ),
                     borderRadius: BorderRadius.circular(5),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: const BorderSide (
                       width: 1.0,
-                      color: Colors.blue,
+                      color: Colors.black54,
                     ),
                     borderRadius: BorderRadius.circular(5),
                   ),
@@ -243,14 +241,14 @@ class _RegissterScreensState extends State<SignUpScreen> {
                   enabledBorder: OutlineInputBorder(
                     borderSide: const BorderSide (
                       width: 1.0,
-                      color: Colors.blue,
+                      color: Colors.lightGreen,
                     ),
                     borderRadius: BorderRadius.circular(5),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: const BorderSide (
                       width: 1.0,
-                      color: Colors.blue,
+                      color: Colors.lightGreen,
                     ),
                     borderRadius: BorderRadius.circular(5),
                   ),
@@ -283,14 +281,21 @@ class _RegissterScreensState extends State<SignUpScreen> {
               ),
               const SizedBox(height: 24,),
               ElevatedButton(
-                  onPressed: () {
-                    _signUp();
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: Text("Register",
-                        style: TextStyle(fontSize: 20, color: Colors.indigo)),
-                  )),
+                onPressed: () {
+                  _signUp();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.lightGreen,  // Set button color to light green
+                  padding: const EdgeInsets.symmetric(vertical: 16),  // Adjust padding
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),  // Optional: Add rounded corners
+                  ),
+                ),
+                child: Text(
+                  "Register",
+                  style: TextStyle(fontSize: 20, color: Colors.white),  // Set text color to white
+                ),
+              ),
               const SizedBox(height: 24,),
               RichText(
                 textAlign: TextAlign.center,

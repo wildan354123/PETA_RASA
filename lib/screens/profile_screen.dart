@@ -18,14 +18,13 @@ class _TampilanProfileState extends State<ProfileScreen> {
   String _imageFile = '';
   final picker = ImagePicker();
 
-  // Track the login state
   bool isLoggedIn = false;
-
   List<String> history = [];
-
   String _NamaLengkap = '';
   String _UserName = '';
   String _Email = '';
+
+  TextEditingController bioController = TextEditingController();
 
   Future<void> _getImage(ImageSource source) async {
     if (kIsWeb && source == ImageSource.camera) {
@@ -49,7 +48,7 @@ class _TampilanProfileState extends State<ProfileScreen> {
         debugPrint('No image selected.');
       }
     } catch (e) {
-      debugPrint('Error picking imageL $e');
+      debugPrint('Error picking image: $e');
     }
   }
 
@@ -62,22 +61,16 @@ class _TampilanProfileState extends State<ProfileScreen> {
             child: Wrap(
               children: [
                 ListTile(
-                  leading: const Icon(
-                      Icons.camera,
-                      color: Colors.lightGreen
-                  ),
+                  leading: const Icon(Icons.camera, color: Colors.lightGreen),
                   title: const Text('Camera'),
                   onTap: () {
-                    debugPrint('Kamera dipanggil');
                     Navigator.of(context).pop();
                     _getImage(ImageSource.camera);
                   },
                 ),
                 ListTile(
                   leading: const Icon(
-                      Icons.photo_library,
-                      color: Colors.lightGreen
-                  ),
+                      Icons.photo_library, color: Colors.lightGreen),
                   title: const Text('Gallery'),
                   onTap: () {
                     Navigator.of(context).pop();
@@ -90,12 +83,12 @@ class _TampilanProfileState extends State<ProfileScreen> {
         }
     );
   }
+
   Future<void> _logout() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove('isLoggedIn'); // Hanya menghapus status login
+    await prefs.remove('isLoggedIn');
     Navigator.pushReplacementNamed(context, '/signin');
   }
-
 
   Future<void> getUserData() async {
     final prefs = await SharedPreferences.getInstance();
@@ -104,11 +97,10 @@ class _TampilanProfileState extends State<ProfileScreen> {
     final encryptedEmail = prefs.getString('Email') ?? '';
     final keyString = prefs.getString('key') ?? '';
     final ivString = prefs.getString('iv') ?? '';
+    final savedBio = prefs.getString('Bio') ?? '';
 
-    if (encryptedNamaLengkap.isNotEmpty &&
-        encryptedUsername.isNotEmpty &&
-        encryptedEmail.isNotEmpty &&
-        keyString.isNotEmpty &&
+    if (encryptedNamaLengkap.isNotEmpty && encryptedUsername.isNotEmpty &&
+        encryptedEmail.isNotEmpty && keyString.isNotEmpty &&
         ivString.isNotEmpty) {
       try {
         final key = encrypt.Key.fromBase64(keyString);
@@ -119,14 +111,15 @@ class _TampilanProfileState extends State<ProfileScreen> {
           _NamaLengkap = encrypter.decrypt64(encryptedNamaLengkap, iv: iv);
           _UserName = encrypter.decrypt64(encryptedUsername, iv: iv);
           _Email = encrypter.decrypt64(encryptedEmail, iv: iv);
-          isLoggedIn = true; // Mark as logged in
+          bioController.text = savedBio;
+          isLoggedIn = true;
         });
       } catch (e) {
         setState(() {
           _NamaLengkap = 'Dekripsi gagal';
           _UserName = 'Dekripsi gagal';
           _Email = 'Dekripsi gagal';
-          isLoggedIn = false; // If decryption fails, treat as logged out
+          isLoggedIn = false;
         });
       }
     } else {
@@ -134,7 +127,7 @@ class _TampilanProfileState extends State<ProfileScreen> {
         _NamaLengkap = 'Data tidak tersedia';
         _UserName = 'Data tidak tersedia';
         _Email = 'Data tidak tersedia';
-        isLoggedIn = false; // No data available, treat as logged out
+        isLoggedIn = false;
       });
     }
   }
@@ -146,81 +139,22 @@ class _TampilanProfileState extends State<ProfileScreen> {
     });
   }
 
-  void _showHistoryDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.lightGreen[50],
-          title: const Text('Riwayat',
-            style: TextStyle(
-              color: Colors.lightGreen,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(bottom: 8),
-                child: Text(
-                  'Berikut adalah kuliner yang telah Anda ulas:',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black54,
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-              ),
-              SizedBox(
-                width: double.maxFinite,
-                height: 300,
-                child: ListView.builder(
-                  itemCount: history.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      margin: const EdgeInsets.symmetric(vertical: 5),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      color: Colors.white,
-                      child: ListTile(
-                        title: Text(
-                          '${index + 1}.  ${history[index]}',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Tutup',
-                style: TextStyle(
-                  color: Colors.lightGreen,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
+
+  Future<void> _login() async {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => const SignInScreen()));
+  }
+
+  Future<void> _saveBio() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('Bio', bioController.text);
+    setState(() {
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Bio berhasil disimpan.')),
     );
   }
 
-  Future<void> _login() async {
-    Navigator.pushReplacement(context,
-      MaterialPageRoute(builder: (context) => const SignInScreen()),
-    );
-  }
 
   @override
   void initState() {
@@ -236,117 +170,136 @@ class _TampilanProfileState extends State<ProfileScreen> {
         backgroundColor: Colors.white,
         title: const Text(
           'Profil',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+          style: TextStyle(color: Colors.lightGreen,
+              fontSize: 20,
+              fontWeight: FontWeight.bold),
+        ),
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Profile Picture
+              Center(
+                child: Stack(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        border: Border.all(color: Colors.lightGreen, width: 2),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            blurRadius: 6,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: CircleAvatar(
+                        radius: 60,
+                        backgroundImage: _imageFile.isNotEmpty
+                            ? (kIsWeb
+                            ? NetworkImage(_imageFile)
+                            : FileImage(File(_imageFile))) as ImageProvider
+                            : const AssetImage('Images/user.png'),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: IconButton(
+                        onPressed: _showPicker,
+                        icon: const Icon(Icons.camera_alt, color: Colors.white),
+                        iconSize: 30,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+        
+              // User Info
+              Text(
+                _UserName,
+                style: const TextStyle(fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.lightGreen),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                _Email,
+                style: const TextStyle(fontSize: 16, color: Colors.grey),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                _NamaLengkap,
+                style: const TextStyle(fontSize: 18, color: Colors.lightGreen),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: bioController,
+                maxLines: 3,
+                textAlign: TextAlign.center,  // Center the text inside the TextField
+                style: const TextStyle(color: Colors.grey),  // Set the input text color to grey
+                decoration: InputDecoration(
+                  hintText: 'Tulis bio Anda di sini...',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: Colors.white), // Border color
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: Colors.white), // Focused border color
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: Colors.white), // Enabled border color
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8), // Adjust horizontal padding
+                ),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: _saveBio,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.lightGreen,
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 15, horizontal: 20),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                ),
+                child: const Text(
+                  'Simpan Bio',
+                  style: TextStyle(color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              const SizedBox(height: 20),
+        
+              // Login / Logout Button
+              ElevatedButton(
+                onPressed: isLoggedIn ? _logout : _login,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.lightGreen,
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 15, horizontal: 20),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                ),
+                child: Text(
+                  isLoggedIn ? 'Logout' : 'Login',
+                  style: const TextStyle(color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
           ),
         ),
-      ),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.lightGreen, width: 2),
-                      shape: BoxShape.circle,
-                    ),
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: _imageFile.isNotEmpty
-                          ? (kIsWeb
-                          ? NetworkImage(_imageFile)
-                          : FileImage(File(_imageFile))) as ImageProvider
-                          : const AssetImage('Images/user.png'),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  IconButton(
-                    onPressed: _showPicker,
-                    icon: const Icon(Icons.camera_alt),
-                    color: Colors.lightGreen,
-                    iconSize: 30,
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    _UserName,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.lightGreen,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    _Email,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const Divider(
-                    color: Colors.lightGreen,
-                    thickness: 1,
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    _NamaLengkap,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.lightGreen,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  // Conditional button rendering based on login state
-                  Container(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: isLoggedIn ? _logout : _login,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.lightGreen,
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: Text(
-                        isLoggedIn ? 'Logout' : 'Login',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                ],
-              ),
-            ),
-          ),
-          Positioned(
-            top: 10,
-            right: 10,
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.lightGreen,
-                  borderRadius: BorderRadius.circular(5.0)
-              ),
-              child: IconButton(
-                onPressed: _showHistoryDialog,
-                icon: const Icon(Icons.history),
-                color: Colors.white,
-                iconSize: 30,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
