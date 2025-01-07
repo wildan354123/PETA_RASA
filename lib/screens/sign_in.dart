@@ -17,7 +17,6 @@ class _LoginScreensState extends State<SignInScreen> {
   bool _isSignIn = false;
   bool _obscurePassword = true;
 
-
   Future<Map<String, String>> _retrieveAndDecryptDataFromPrefs(
       SharedPreferences prefs) async {
     final encryptedNamaLengkap = prefs.getString('NamaLengkap') ?? '';
@@ -42,7 +41,7 @@ class _LoginScreensState extends State<SignInScreen> {
       final encrypter = encrypt.Encrypter(encrypt.AES(key));
 
       final decryptedNamaLengkap =
-      encrypter.decrypt64(encryptedNamaLengkap, iv: iv);
+          encrypter.decrypt64(encryptedNamaLengkap, iv: iv);
       final decryptedUsername = encrypter.decrypt64(encryptedUsername, iv: iv);
       final decryptedEmail = encrypter.decrypt64(encryptedEmail, iv: iv);
       final decryptedPassword = encrypter.decrypt64(encryptedPassword, iv: iv);
@@ -83,7 +82,7 @@ class _LoginScreensState extends State<SignInScreen> {
         final decryptedEmail = data['Email'];
 
         if ((userNameOrEmail == decryptedUsername ||
-            userNameOrEmail == decryptedEmail) &&
+                userNameOrEmail == decryptedEmail) &&
             password == decryptedPassword) {
           await prefs.setBool('isLoggedIn', true); // Menandai login
           setState(() {
@@ -104,7 +103,8 @@ class _LoginScreensState extends State<SignInScreen> {
         }
       } else {
         setState(() {
-          _errorText = "Data pengguna tidak ditemukan. Silakan daftar terlebih dahulu.";
+          _errorText =
+              "Data pengguna tidak ditemukan. Silakan daftar terlebih dahulu.";
         });
       }
     } catch (e) {
@@ -129,7 +129,7 @@ class _LoginScreensState extends State<SignInScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Image.asset("Images/welcome.png"),
+              Image.asset("images/welcome.png"),
               const SizedBox(height: 16),
               const Text(
                 "Login Detail",
@@ -142,11 +142,13 @@ class _LoginScreensState extends State<SignInScreen> {
                 textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(width: 1.0, color: Colors.lightGreen),
+                    borderSide:
+                        const BorderSide(width: 1.0, color: Colors.lightGreen),
                     borderRadius: BorderRadius.circular(5),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(width: 1.0, color: Colors.lightGreen),
+                    borderSide:
+                        const BorderSide(width: 1.0, color: Colors.lightGreen),
                     borderRadius: BorderRadius.circular(5),
                   ),
                   hintText: "Username atau Email",
@@ -158,11 +160,13 @@ class _LoginScreensState extends State<SignInScreen> {
                 textInputAction: TextInputAction.done,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(width: 1.0, color: Colors.lightGreen),
+                    borderSide:
+                        const BorderSide(width: 1.0, color: Colors.lightGreen),
                     borderRadius: BorderRadius.circular(5),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(width: 1.0, color: Colors.lightGreen),
+                    borderSide:
+                        const BorderSide(width: 1.0, color: Colors.lightGreen),
                     borderRadius: BorderRadius.circular(5),
                   ),
                   suffixIcon: IconButton(
@@ -172,7 +176,9 @@ class _LoginScreensState extends State<SignInScreen> {
                       });
                     },
                     icon: Icon(
-                      _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                      _obscurePassword
+                          ? Icons.visibility_off
+                          : Icons.visibility,
                     ),
                   ),
                   hintText: "Password",

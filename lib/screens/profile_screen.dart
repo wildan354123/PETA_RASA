@@ -34,16 +34,15 @@ class _TampilanProfileState extends State<ProfileScreen> {
 
     try {
       final pickedFile = await picker.pickImage(
-          source: source,
-          maxHeight: 720,
-          maxWidth: 720,
-          imageQuality: 80
-      );
+          source: source, maxHeight: 720, maxWidth: 720, imageQuality: 80);
       if (pickedFile != null) {
         setState(() {
           _imageFile = pickedFile.path;
           debugPrint('File path: $_imageFile');
         });
+        // bertujuan untuk menyimpan gambar ke penyimpanan lokal
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('profile_image', pickedFile.path);
       } else {
         debugPrint('No image selected.');
       }
@@ -69,8 +68,8 @@ class _TampilanProfileState extends State<ProfileScreen> {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(
-                      Icons.photo_library, color: Colors.lightGreen),
+                  leading:
+                      const Icon(Icons.photo_library, color: Colors.lightGreen),
                   title: const Text('Gallery'),
                   onTap: () {
                     Navigator.of(context).pop();
@@ -80,8 +79,7 @@ class _TampilanProfileState extends State<ProfileScreen> {
               ],
             ),
           );
-        }
-    );
+        });
   }
 
   Future<void> _logout() async {
@@ -98,9 +96,12 @@ class _TampilanProfileState extends State<ProfileScreen> {
     final keyString = prefs.getString('key') ?? '';
     final ivString = prefs.getString('iv') ?? '';
     final savedBio = prefs.getString('Bio') ?? '';
+    final savedImagePath = prefs.getString('profile_image') ?? '';
 
-    if (encryptedNamaLengkap.isNotEmpty && encryptedUsername.isNotEmpty &&
-        encryptedEmail.isNotEmpty && keyString.isNotEmpty &&
+    if (encryptedNamaLengkap.isNotEmpty &&
+        encryptedUsername.isNotEmpty &&
+        encryptedEmail.isNotEmpty &&
+        keyString.isNotEmpty &&
         ivString.isNotEmpty) {
       try {
         final key = encrypt.Key.fromBase64(keyString);
@@ -112,6 +113,7 @@ class _TampilanProfileState extends State<ProfileScreen> {
           _UserName = encrypter.decrypt64(encryptedUsername, iv: iv);
           _Email = encrypter.decrypt64(encryptedEmail, iv: iv);
           bioController.text = savedBio;
+          _imageFile = savedImagePath;
           isLoggedIn = true;
         });
       } catch (e) {
@@ -139,7 +141,6 @@ class _TampilanProfileState extends State<ProfileScreen> {
     });
   }
 
-
   Future<void> _login() async {
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => const SignInScreen()));
@@ -148,13 +149,11 @@ class _TampilanProfileState extends State<ProfileScreen> {
   Future<void> _saveBio() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('Bio', bioController.text);
-    setState(() {
-    });
+    setState(() {});
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Bio berhasil disimpan.')),
     );
   }
-
 
   @override
   void initState() {
@@ -170,7 +169,8 @@ class _TampilanProfileState extends State<ProfileScreen> {
         backgroundColor: Colors.white,
         title: const Text(
           'Profil',
-          style: TextStyle(color: Colors.lightGreen,
+          style: TextStyle(
+              color: Colors.lightGreen,
               fontSize: 20,
               fontWeight: FontWeight.bold),
         ),
@@ -202,9 +202,9 @@ class _TampilanProfileState extends State<ProfileScreen> {
                         radius: 60,
                         backgroundImage: _imageFile.isNotEmpty
                             ? (kIsWeb
-                            ? NetworkImage(_imageFile)
-                            : FileImage(File(_imageFile))) as ImageProvider
-                            : const AssetImage('Images/user.png'),
+                                ? NetworkImage(_imageFile)
+                                : FileImage(File(_imageFile))) as ImageProvider
+                            : const AssetImage('images/user.png'),
                       ),
                     ),
                     Positioned(
@@ -220,11 +220,12 @@ class _TampilanProfileState extends State<ProfileScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-        
+
               // User Info
               Text(
                 _UserName,
-                style: const TextStyle(fontSize: 22,
+                style: const TextStyle(
+                    fontSize: 22,
                     fontWeight: FontWeight.bold,
                     color: Colors.lightGreen),
               ),
@@ -242,8 +243,10 @@ class _TampilanProfileState extends State<ProfileScreen> {
               TextField(
                 controller: bioController,
                 maxLines: 3,
-                textAlign: TextAlign.center,  // Center the text inside the TextField
-                style: const TextStyle(color: Colors.grey),  // Set the input text color to grey
+                textAlign:
+                    TextAlign.center, // Center the text inside the TextField
+                style: const TextStyle(
+                    color: Colors.grey), // Set the input text color to grey
                 decoration: InputDecoration(
                   hintText: 'Tulis bio Anda di sini...',
                   border: OutlineInputBorder(
@@ -252,13 +255,16 @@ class _TampilanProfileState extends State<ProfileScreen> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: Colors.white), // Focused border color
+                    borderSide:
+                        BorderSide(color: Colors.white), // Focused border color
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: Colors.white), // Enabled border color
+                    borderSide:
+                        BorderSide(color: Colors.white), // Enabled border color
                   ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8), // Adjust horizontal padding
+                  contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12, vertical: 8), // Adjust horizontal padding
                 ),
               ),
               const SizedBox(height: 10),
@@ -266,33 +272,35 @@ class _TampilanProfileState extends State<ProfileScreen> {
                 onPressed: _saveBio,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightGreen,
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 15, horizontal: 20),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
                 ),
                 child: const Text(
                   'Simpan Bio',
-                  style: TextStyle(color: Colors.white,
+                  style: TextStyle(
+                      color: Colors.white,
                       fontSize: 18,
                       fontWeight: FontWeight.bold),
                 ),
               ),
               const SizedBox(height: 20),
-        
+
               // Login / Logout Button
               ElevatedButton(
                 onPressed: isLoggedIn ? _logout : _login,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightGreen,
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 15, horizontal: 20),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
                 ),
                 child: Text(
                   isLoggedIn ? 'Logout' : 'Login',
-                  style: const TextStyle(color: Colors.white,
+                  style: const TextStyle(
+                      color: Colors.white,
                       fontSize: 18,
                       fontWeight: FontWeight.bold),
                 ),

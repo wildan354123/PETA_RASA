@@ -10,6 +10,7 @@ class SignUpScreen extends StatefulWidget {
   @override
   State<SignUpScreen> createState() => _RegissterScreensState();
 }
+
 class _RegissterScreensState extends State<SignUpScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -19,8 +20,8 @@ class _RegissterScreensState extends State<SignUpScreen> {
   bool _obscurePassword = false;
 
   String? _errorNamaLengkap;
-  String? _errorUserName ;
-  String? _errorEmail ;
+  String? _errorUserName;
+  String? _errorEmail;
   String? _errorPassword;
 
   void _signUp() async {
@@ -38,25 +39,25 @@ class _RegissterScreensState extends State<SignUpScreen> {
     });
     bool hasError = false;
 
-    if(NamaLengkap.isEmpty){
+    if (NamaLengkap.isEmpty) {
       setState(() {
         _errorNamaLengkap = 'Nama lengkap tidak boleh kososng';
       });
       hasError = true;
     }
-    if(UserName.isEmpty) {
+    if (UserName.isEmpty) {
       setState(() {
         _errorUserName = 'Username Tidak Boleh kosong';
       });
       hasError = true;
     }
-    if(Email.isEmpty){
+    if (Email.isEmpty) {
       setState(() {
         _errorEmail = 'Email Tidak Boleh kosong';
       });
       hasError = true;
-    }if
-    (!RegExp(r"^[^@]+@[^@]+\.[^@]+$").hasMatch(Email)){
+    }
+    if (!RegExp(r"^[^@]+@[^@]+\.[^@]+$").hasMatch(Email)) {
       setState(() {
         _errorEmail = 'Format Email tidak valid';
       });
@@ -69,14 +70,18 @@ class _RegissterScreensState extends State<SignUpScreen> {
         !Password.contains(RegExp(r'[0-9]')) ||
         !Password.contains(RegExp(r'[!@#$%^&*()<>,.?"/:;]'))) {
       setState(() {
-        _errorPassword = 'Minimal 6 karakter, kombinasi [A-Z], [a-z], [0-9], [!@#\\\$%^&*(),.?":{}|<>]';
+        _errorPassword =
+            'Minimal 6 karakter, kombinasi [A-Z], [a-z], [0-9], [!@#\\\$%^&*(),.?":{}|<>]';
       });
       hasError = true;
     }
-    if(hasError){
+    if (hasError) {
       return;
     }
-    if (NamaLengkap.isNotEmpty && UserName.isNotEmpty && Email.isNotEmpty && Password.isNotEmpty){
+    if (NamaLengkap.isNotEmpty &&
+        UserName.isNotEmpty &&
+        Email.isNotEmpty &&
+        Password.isNotEmpty) {
       final encrypt.Key key = encrypt.Key.fromLength(32);
       final iv = encrypt.IV.fromLength(16);
 
@@ -86,13 +91,12 @@ class _RegissterScreensState extends State<SignUpScreen> {
       final encryptedEmail = encrypter.encrypt(Email, iv: iv);
       final encryptedPassword = encrypter.encrypt(Password, iv: iv);
 
-
       prefs.setString('NamaLengkap', encryptedNamaLengkap.base64);
       prefs.setString('UserName', encryptedUsername.base64);
       prefs.setString('Email', encryptedEmail.base64);
       prefs.setString('Password', encryptedPassword.base64);
-      prefs.setString ('key', key.base64);
-      prefs.setString ('iv', iv.base64);
+      prefs.setString('key', key.base64);
+      prefs.setString('iv', iv.base64);
     }
 
     Navigator.pushReplacementNamed(context, '/signin');
@@ -121,13 +125,18 @@ class _RegissterScreensState extends State<SignUpScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Image.asset("Images/welcome.png"),
-              const SizedBox(height: 16,),
-              Text("Register",
+              Image.asset("images/welcome.png"),
+              const SizedBox(
+                height: 16,
+              ),
+              Text(
+                "Register",
                 style: TextStyle(fontSize: 20),
               ),
 
-              const SizedBox(height: 24,),
+              const SizedBox(
+                height: 24,
+              ),
               TextField(
                 controller: namaLengkapController,
                 textInputAction: TextInputAction.next,
@@ -159,10 +168,11 @@ class _RegissterScreensState extends State<SignUpScreen> {
                       ),
                     ),
                     hintText: "Nama Lengkap",
-                    errorText: _errorNamaLengkap
-                ),
+                    errorText: _errorNamaLengkap),
               ),
-              const SizedBox(height: 16,),
+              const SizedBox(
+                height: 16,
+              ),
               TextField(
                 controller: userNameController,
                 textInputAction: TextInputAction.next,
@@ -176,15 +186,10 @@ class _RegissterScreensState extends State<SignUpScreen> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: const BorderSide(
-                          width: 1.0,
-                          color: Colors.lightGreen
-                      ),
+                          width: 1.0, color: Colors.lightGreen),
                     ),
                     focusedErrorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          width: 1,
-                          color: Colors.red
-                      ),
+                      borderSide: BorderSide(width: 1, color: Colors.red),
                       borderRadius: BorderRadius.circular(5),
                     ),
                     errorBorder: OutlineInputBorder(
@@ -194,10 +199,11 @@ class _RegissterScreensState extends State<SignUpScreen> {
                       ),
                     ),
                     hintText: "User Name",
-                    errorText: _errorUserName
-                ),
+                    errorText: _errorUserName),
               ),
-              const SizedBox(height: 16,),
+              const SizedBox(
+                height: 16,
+              ),
               TextField(
                 controller: emailController,
                 keyboardType: TextInputType.emailAddress,
@@ -211,42 +217,38 @@ class _RegissterScreensState extends State<SignUpScreen> {
                     borderRadius: BorderRadius.circular(5),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide (
+                    borderSide: const BorderSide(
                       width: 1.0,
                       color: Colors.black54,
                     ),
                     borderRadius: BorderRadius.circular(5),
                   ),
                   errorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        width: 1,
-                        color: Colors.red
-                    ),
+                    borderSide: BorderSide(width: 1, color: Colors.red),
                   ),
                   focusedErrorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        width: 1,
-                        color: Colors.red
-                    ),
+                    borderSide: BorderSide(width: 1, color: Colors.red),
                   ),
                   hintText: "Email",
                   errorText: _errorEmail,
                 ),
               ),
-              const SizedBox(height: 16,),
+              const SizedBox(
+                height: 16,
+              ),
               TextField(
                 controller: passwordController,
                 textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide (
+                    borderSide: const BorderSide(
                       width: 1.0,
                       color: Colors.lightGreen,
                     ),
                     borderRadius: BorderRadius.circular(5),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide (
+                    borderSide: const BorderSide(
                       width: 1.0,
                       color: Colors.lightGreen,
                     ),
@@ -259,10 +261,7 @@ class _RegissterScreensState extends State<SignUpScreen> {
                     ),
                   ),
                   focusedErrorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        width: 1,
-                        color: Colors.red
-                    ),
+                    borderSide: BorderSide(width: 1, color: Colors.red),
                   ),
                   suffixIcon: IconButton(
                     onPressed: () {
@@ -271,32 +270,43 @@ class _RegissterScreensState extends State<SignUpScreen> {
                       });
                     },
                     icon: Icon(
-                      _obscurePassword ? Icons.visibility_off
+                      _obscurePassword
+                          ? Icons.visibility_off
                           : Icons.visibility,
-                    ),),
+                    ),
+                  ),
                   hintText: "Password",
                   errorText: _errorPassword,
                 ),
                 obscureText: _obscurePassword,
               ),
-              const SizedBox(height: 24,),
+              const SizedBox(
+                height: 24,
+              ),
               ElevatedButton(
                 onPressed: () {
                   _signUp();
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.lightGreen,  // Set button color to light green
-                  padding: const EdgeInsets.symmetric(vertical: 16),  // Adjust padding
+                  backgroundColor:
+                      Colors.lightGreen, // Set button color to light green
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 16), // Adjust padding
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),  // Optional: Add rounded corners
+                    borderRadius: BorderRadius.circular(
+                        20), // Optional: Add rounded corners
                   ),
                 ),
                 child: Text(
                   "Register",
-                  style: TextStyle(fontSize: 20, color: Colors.white),  // Set text color to white
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white), // Set text color to white
                 ),
               ),
-              const SizedBox(height: 24,),
+              const SizedBox(
+                height: 24,
+              ),
               RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
@@ -315,13 +325,10 @@ class _RegissterScreensState extends State<SignUpScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        SignInScreen()),
+                                    builder: (context) => SignInScreen()),
                               );
-                            }
-                      ),
-                    ]
-                ),
+                            }),
+                    ]),
               ),
             ],
           ),
