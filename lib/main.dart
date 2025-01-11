@@ -39,7 +39,8 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightGreen).copyWith(
+          colorScheme:
+              ColorScheme.fromSeed(seedColor: Colors.lightGreen).copyWith(
             primary: Colors.lightGreen,
             secondary: Colors.lightGreen,
             surface: Colors.white,
