@@ -1,9 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:PETA_RASA/models/makanan.dart';
 import 'package:PETA_RASA/provider/favorites_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DetailScreen extends StatefulWidget {
   final Makanan makanan;
@@ -14,9 +15,64 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
+  double _userRating = 0.0;
+  TextEditingController _commentController = TextEditingController();
+  List<Map<String, dynamic>> _comments = [];
+  int? _editingIndex;
+
   @override
   void initState() {
     super.initState();
+    _loadComments();
+  }
+
+  Future<void> _loadComments() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? commentsJson = prefs.getString('comments_${widget.makanan.name}');
+    if (commentsJson != null) {
+      List<dynamic> decodedComments = json.decode(commentsJson);
+      setState(() {
+        _comments =
+            decodedComments.map((e) => Map<String, dynamic>.from(e)).toList();
+      });
+    }
+  }
+
+  Future<void> _saveComments() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String commentsJson = json.encode(_comments);
+    await prefs.setString('comments_${widget.makanan.name}', commentsJson);
+  }
+
+  void _addComment(double rating, String comment) {
+    setState(() {
+      _comments.add({
+        'rating': rating,
+        'comment': comment,
+      });
+    });
+    _saveComments();
+    _userRating = 0.0;
+    _commentController.clear();
+  }
+
+  void _updateComment(int index, double rating, String comment) {
+    setState(() {
+      _comments[index] = {
+        'rating': rating,
+        'comment': comment,
+      };
+    });
+    _saveComments();
+    _editingIndex = null;
+    _commentController.clear();
+  }
+
+  void _deleteComment(int index) {
+    setState(() {
+      _comments.removeAt(index);
+    });
+    _saveComments();
   }
 
   @override
@@ -28,7 +84,7 @@ class _DetailScreenState extends State<DetailScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Detail header
+            // Header detail
             Stack(
               children: [
                 Padding(
@@ -44,7 +100,8 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.deepPurple[100]?.withOpacity(0.8),
@@ -57,40 +114,20 @@ class _DetailScreenState extends State<DetailScreen> {
                       icon: const Icon(Icons.arrow_back),
                     ),
                   ),
-                )
+                ),
               ],
             ),
-            // Detail info
+            // Info makanan
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 16),
-                  // Info atas (rating dan tombol favorit)
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end, // Menempatkan rating dan tombol di kanan
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      // Rating di kiri, tombol favorite di kanan
-                      RatingBar.builder(
-                        initialRating: widget.makanan.rating,
-                        minRating: 1,
-                        direction: Axis.horizontal,
-                        allowHalfRating: true,
-                        itemCount: 5,
-                        itemSize: 20,
-                        itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                        itemBuilder: (context, _) => const Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
-                        onRatingUpdate: (rating) {
-                          setState(() {
-                            widget.makanan.rating = rating;
-                          });
-                        },
-                      ),
-                      const SizedBox(width: 8), // Memberikan jarak antara rating dan tombol favorite
                       IconButton(
                         onPressed: () {
                           setState(() {
@@ -108,7 +145,6 @@ class _DetailScreenState extends State<DetailScreen> {
                       ),
                     ],
                   ),
-                  // Nama makanan di tengah
                   const SizedBox(height: 16),
                   Text(
                     widget.makanan.name,
@@ -117,7 +153,6 @@ class _DetailScreenState extends State<DetailScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  // Info lokasi dan lainnya
                   const SizedBox(height: 16),
                   Row(
                     children: [
@@ -127,10 +162,15 @@ class _DetailScreenState extends State<DetailScreen> {
                         width: 70,
                         child: Text(
                           'Lokasi',
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black54),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black54),
                         ),
                       ),
-                      Text(': ${widget.makanan.location}', style: TextStyle(color: Colors.black54),),
+                      Text(
+                        ': ${widget.makanan.location}',
+                        style: TextStyle(color: Colors.black54),
+                      ),
                     ],
                   ),
                   Row(
@@ -141,111 +181,167 @@ class _DetailScreenState extends State<DetailScreen> {
                         width: 70,
                         child: Text(
                           'Kategori',
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black54),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black54),
                         ),
                       ),
-                      Text(': ${widget.makanan.category}', style: TextStyle(color: Colors.black54),),
+                      Text(
+                        ': ${widget.makanan.category}',
+                        style: TextStyle(color: Colors.black54),
+                      ),
                     ],
                   ),
-                  const SizedBox(height: 16),
                   Divider(color: Colors.deepPurple.shade100),
                   const SizedBox(height: 16),
-                  // Deskripsi
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        width: 70,
-                        child: Text(
-                          'Deskripsi',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        '${widget.makanan.description}',
-                        style: TextStyle(color: Colors.black54),
-                        textAlign: TextAlign.justify,
-                      ),
-                    ],
+                  Text(
+                    'Deskripsi',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.justify,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    '${widget.makanan.description}',
+                    style: TextStyle(color: Colors.black54),
+                    textAlign: TextAlign.justify,
                   ),
                 ],
               ),
             ),
-            // Gallery Section
+
             Padding(
-              padding: const EdgeInsets.all(15),
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  const Text(
+                    'Beri ulasan anda',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  RatingBar.builder(
+                    initialRating: _userRating,
+                    minRating: 1,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    itemSize: 40,
+                    itemBuilder: (context, _) => Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                    ),
+                    onRatingUpdate: (rating) {
+                      setState(() {
+                        _userRating = rating;
+                      });
+                    },
+                  ),
+                  TextField(
+                    controller: _commentController,
+                    decoration: InputDecoration(
+                      labelText: 'Tambah ulasan',
+                      hintText: 'Tulis ulasanmu disini...',
+                    ),
+                    maxLines: 3,
+                  ),
+                  SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_userRating > 0 &&
+                          _commentController.text.isNotEmpty) {
+                        if (_editingIndex != null) {
+                          _updateComment(_editingIndex!, _userRating,
+                              _commentController.text);
+                        } else {
+                          _addComment(_userRating, _commentController.text);
+                        }
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              content:
+                                  Text('Please enter a rating and comment')),
+                        );
+                      }
+                    },
+                    child: Text(_editingIndex != null
+                        ? 'Ubah ulasan  '
+                        : 'Tambah ulasan '),
+                  ),
+                ],
+              ),
+            ),
+            // Menampilkan komentar dan rating
+            Padding(
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Divider(color: Colors.deepPurple.shade100),
                   const Text(
-                    'Resep',
+                    'Ulasan:',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
-                  SizedBox(
-                    height: 100,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: widget.makanan.imageAsset2.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 8),
-                          child: GestureDetector(
-                            onTap: () {
-                              // Tampilkan gambar besar di dialog
-                              showDialog(
-                                context: context,
-                                builder: (context) => Dialog(
-                                  backgroundColor: Colors.transparent,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.pop(context); // Menutup dialog saat gambar diklik
-                                    },
-                                    child: CachedNetworkImage(
-                                      imageUrl: widget.makanan.imageAsset2[index],
-                                      fit: BoxFit.contain, // Pastikan gambar penuh
+                  _comments.isEmpty
+                      ? Text('No comments yet')
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: _comments.length,
+                          itemBuilder: (context, index) {
+                            return Card(
+                              margin: EdgeInsets.symmetric(vertical: 8),
+                              child: ListTile(
+                                title: RatingBar.builder(
+                                  initialRating: _comments[index]['rating'],
+                                  minRating: 1,
+                                  allowHalfRating: true,
+                                  itemCount: 5,
+                                  itemSize: 20,
+                                  itemBuilder: (context, _) => Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                  ),
+                                  onRatingUpdate: (rating) {
+                                    _updateComment(index, rating,
+                                        _comments[index]['comment']);
+                                  },
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(_comments[index]['comment']),
+                                    Row(
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(Icons.edit),
+                                          onPressed: () {
+                                            setState(() {
+                                              _editingIndex = index;
+                                              _commentController.text =
+                                                  _comments[index]['comment'];
+                                              _userRating =
+                                                  _comments[index]['rating'];
+                                            });
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.delete),
+                                          onPressed: () {
+                                            _deleteComment(index);
+                                          },
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: Colors.deepPurple.shade100,
-                                  width: 2,
+                                  ],
                                 ),
                               ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: CachedNetworkImage(
-                                  imageUrl: widget.makanan.imageAsset2[index],
-                                  width: 120,
-                                  height: 120,
-                                  fit: BoxFit.cover,
-                                  placeholder: (context, url) => Container(
-                                    width: 120,
-                                    height: 120,
-                                    color: Colors.deepPurple[50],
-                                  ),
-                                  errorWidget: (context, asset, error) =>
-                                  const Icon(Icons.error),
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  const Text(
-                    'Tap untuk memperbesar',
-                    style: TextStyle(fontSize: 12, color: Colors.black54),
-                  ),
+                            );
+                          },
+                        ),
                 ],
               ),
             ),
@@ -255,4 +351,3 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 }
-
